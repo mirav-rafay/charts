@@ -148,7 +148,7 @@ query:
   args: []
   ## @param query.replicaCount Number of Thanos Query replicas to deploy
   ##
-  replicaCount: 1
+  replicaCount: 2
   ## @param query.updateStrategy.type Update strategy type for Thanos Query replicas
   ##
   updateStrategy:
