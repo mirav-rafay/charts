@@ -1,7 +1,13 @@
-# RabbitMQ
+<!--- app-name: RabbitMQ -->
 
-[RabbitMQ](https://www.rabbitmq.com/) is an open source multi-protocol message broker.
+# RabbitMQ packaged by Bitnami
 
+RabbitMQ is an open source general-purpose message broker that is designed for consistent, highly-available messaging scenarios (both synchronous and asynchronous).
+
+[Overview of RabbitMQ](https://www.rabbitmq.com)
+
+Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
+                           
 ## TL;DR
 
 ```bash
@@ -17,8 +23,8 @@ Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
@@ -60,7 +66,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | ------------------- | -------------------------------------------------------------- | --------------------- |
 | `image.registry`    | RabbitMQ image registry                                        | `docker.io`           |
 | `image.repository`  | RabbitMQ image repository                                      | `bitnami/rabbitmq`    |
-| `image.tag`         | RabbitMQ image tag (immutable tags are recommended)            | `3.9.12-debian-10-r0` |
+| `image.tag`         | RabbitMQ image tag (immutable tags are recommended)            | `3.9.15-debian-10-r6` |
 | `image.pullPolicy`  | RabbitMQ image pull policy                                     | `IfNotPresent`        |
 | `image.pullSecrets` | Specify docker-registry secret names as an array               | `[]`                  |
 | `image.debug`       | Set to true if you would like to see extra information on logs | `false`               |
@@ -80,6 +86,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | `diagnosticMode.args`              | Args to override all containers in the deployment                                                                                        | `["infinity"]`                                    |
 | `hostAliases`                      | Deployment pod host aliases                                                                                                              | `[]`                                              |
 | `commonAnnotations`                | Annotations to add to all deployed objects                                                                                               | `{}`                                              |
+| `dnsPolicy`                        | DNS Policy for pod                                                                                                                       | `""`                                              |
+| `dnsConfig`                        | DNS Configuration pod                                                                                                                    | `{}`                                              |
 | `auth.username`                    | RabbitMQ application username                                                                                                            | `user`                                            |
 | `auth.password`                    | RabbitMQ application password                                                                                                            | `""`                                              |
 | `auth.existingPasswordSecret`      | Existing secret with RabbitMQ credentials (must contain a value for `rabbitmq-password` key)                                             | `""`                                              |
@@ -110,6 +118,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `clustering.forceBoot`             | Force boot of an unexpectedly shut down cluster (in an unexpected order).                                                                | `false`                                           |
 | `clustering.partitionHandling`     | Switch Partition Handling Strategy. Either `autoheal` or `pause-minority` or `pause-if-all-down` or `ignore`                             | `autoheal`                                        |
 | `loadDefinition.enabled`           | Enable loading a RabbitMQ definitions file to configure RabbitMQ                                                                         | `false`                                           |
+| `loadDefinition.file`              | Name of the definitions file                                                                                                             | `/app/load_definition.json`                       |
 | `loadDefinition.existingSecret`    | Existing secret with the load definitions file                                                                                           | `""`                                              |
 | `command`                          | Override default container command (useful when using custom images)                                                                     | `[]`                                              |
 | `args`                             | Override default container args (useful when using custom images)                                                                        | `[]`                                              |
@@ -193,16 +202,18 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Persistence parameters
 
-| Name                        | Description                                      | Value           |
-| --------------------------- | ------------------------------------------------ | --------------- |
-| `persistence.enabled`       | Enable RabbitMQ data persistence using PVC       | `true`          |
-| `persistence.storageClass`  | PVC Storage Class for RabbitMQ data volume       | `""`            |
-| `persistence.selector`      | Selector to match an existing Persistent Volume  | `{}`            |
-| `persistence.accessMode`    | PVC Access Mode for RabbitMQ data volume         | `ReadWriteOnce` |
-| `persistence.existingClaim` | Provide an existing PersistentVolumeClaims       | `""`            |
-| `persistence.size`          | PVC Storage Request for RabbitMQ data volume     | `8Gi`           |
-| `persistence.volumes`       | Additional volumes without creating PVC          | `[]`            |
-| `persistence.annotations`   | Persistence annotations. Evaluated as a template | `{}`            |
+| Name                        | Description                                      | Value                      |
+| --------------------------- | ------------------------------------------------ | -------------------------- |
+| `persistence.enabled`       | Enable RabbitMQ data persistence using PVC       | `true`                     |
+| `persistence.storageClass`  | PVC Storage Class for RabbitMQ data volume       | `""`                       |
+| `persistence.selector`      | Selector to match an existing Persistent Volume  | `{}`                       |
+| `persistence.accessMode`    | PVC Access Mode for RabbitMQ data volume         | `ReadWriteOnce`            |
+| `persistence.existingClaim` | Provide an existing PersistentVolumeClaims       | `""`                       |
+| `persistence.mountPath`     | The path the volume will be mounted at           | `/bitnami/rabbitmq/mnesia` |
+| `persistence.subPath`       | The subdirectory of the volume to mount to       | `""`                       |
+| `persistence.size`          | PVC Storage Request for RabbitMQ data volume     | `8Gi`                      |
+| `persistence.volumes`       | Additional volumes without creating PVC          | `[]`                       |
+| `persistence.annotations`   | Persistence annotations. Evaluated as a template | `{}`                       |
 
 
 ### Exposure parameters
@@ -217,6 +228,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `service.tlsPortName`              | Amqp TLS service port name                                                                                                       | `amqp-ssl`               |
 | `service.nodePort`                 | Node port override for `amqp` port, if serviceType is `NodePort` or `LoadBalancer`                                               | `""`                     |
 | `service.tlsNodePort`              | Node port override for `amqp-ssl` port, if serviceType is `NodePort` or `LoadBalancer`                                           | `""`                     |
+| `service.distPortEnabled`          | Erlang distribution server port                                                                                                  | `true`                   |
 | `service.distPort`                 | Erlang distribution server port                                                                                                  | `25672`                  |
 | `service.distPortName`             | Erlang distribution service port name                                                                                            | `dist`                   |
 | `service.distNodePort`             | Node port override for `dist` port, if serviceType is `NodePort`                                                                 | `""`                     |
@@ -227,6 +239,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `service.metricsPort`              | RabbitMQ Prometheues metrics port                                                                                                | `9419`                   |
 | `service.metricsPortName`          | RabbitMQ Prometheues metrics service port name                                                                                   | `metrics`                |
 | `service.metricsNodePort`          | Node port override for `metrics` port, if serviceType is `NodePort`                                                              | `""`                     |
+| `service.epmdPortEnabled`          | RabbitMQ EPMD Discovery service port                                                                                             | `true`                   |
 | `service.epmdNodePort`             | Node port override for `epmd` port, if serviceType is `NodePort`                                                                 | `""`                     |
 | `service.epmdPortName`             | EPMD Discovery service port name                                                                                                 | `epmd`                   |
 | `service.extraPorts`               | Extra ports to expose in the service                                                                                             | `[]`                     |
@@ -245,6 +258,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ingress.tls`                      | Enable TLS configuration for the hostname defined at `ingress.hostname` parameter                                                | `false`                  |
 | `ingress.selfSigned`               | Set this to true in order to create a TLS secret for this ingress record                                                         | `false`                  |
 | `ingress.extraHosts`               | The list of additional hostnames to be covered with this ingress record.                                                         | `[]`                     |
+| `ingress.extraRules`               | The list of additional rules to be added to this ingress record. Evaluated as a template                                         | `[]`                     |
 | `ingress.extraTls`                 | The tls configuration for additional hostnames to be covered with this ingress record.                                           | `[]`                     |
 | `ingress.secrets`                  | Custom TLS certificates as secrets                                                                                               | `[]`                     |
 | `ingress.ingressClassName`         | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`                     |
@@ -285,7 +299,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `volumePermissions.enabled`            | Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup` | `false`                 |
 | `volumePermissions.image.registry`     | Init container volume-permissions image registry                                                                     | `docker.io`             |
 | `volumePermissions.image.repository`   | Init container volume-permissions image repository                                                                   | `bitnami/bitnami-shell` |
-| `volumePermissions.image.tag`          | Init container volume-permissions image tag                                                                          | `10-debian-10-r301`     |
+| `volumePermissions.image.tag`          | Init container volume-permissions image tag                                                                          | `10-debian-10-r400`     |
 | `volumePermissions.image.pullPolicy`   | Init container volume-permissions image pull policy                                                                  | `IfNotPresent`          |
 | `volumePermissions.image.pullSecrets`  | Specify docker-registry secret names as an array                                                                     | `[]`                    |
 | `volumePermissions.resources.limits`   | Init container volume-permissions resource limits                                                                    | `{}`                    |
@@ -492,7 +506,7 @@ extraConfiguration: |-
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
 

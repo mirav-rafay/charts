@@ -4,6 +4,9 @@ metadata:
   name: {{ template "external-dns.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels: {{ include "external-dns.labels" . | nindent 4 }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ coalesce .Values.replicas .Values.replicaCount }}
   {{- if .Values.updateStrategy }}
@@ -531,6 +534,16 @@ spec:
               {{- if .Values.extraEnvVars }}
               {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
               {{- end }}
+            {{- if eq .Values.provider "ns1" }}
+            # NS1 environment variables
+            {{- if or (.Values.ns1.apiKey) (.Values.ns1.secretName) }}
+            - name: NS1_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "external-dns.secretName" . }}
+                  key: ns1-api-key
+            {{- end }}
+            {{- end }}
           envFrom:
             {{- if .Values.extraEnvVarsCM }}
             - configMapRef:
@@ -609,7 +622,7 @@ spec:
             - name: azure-config-file
               {{- if or .Values.azure.secretName (and .Values.azure.resourceGroup .Values.azure.tenantId .Values.azure.subscriptionId) }}
               mountPath: /etc/kubernetes/
-              {{- else if not .Values.azure.useManagedIdentityExtension }}
+              {{- else }}
               mountPath: /etc/kubernetes/azure.json
               {{- end }}
               readOnly: true
@@ -624,6 +637,10 @@ spec:
             # Google mountPath(s)
             - name: google-service-account
               mountPath: /etc/secrets/service-account/
+            {{- end }}
+            {{- if eq .Values.provider "oci" }}
+            - name: oci-config-file
+              mountPath: /etc/kubernetes/
             {{- end }}
             {{- if eq .Values.provider "designate" }}
             # Designate mountPath(s)
@@ -676,11 +693,19 @@ spec:
           {{- if or .Values.azure.secretName (and .Values.azure.resourceGroup .Values.azure.tenantId .Values.azure.subscriptionId) }}
           secret:
             secretName: {{ template "external-dns.secretName" . }}
-          {{- else if not .Values.azure.useManagedIdentityExtension }}
+          {{- else if .Values.azure.useManagedIdentityExtension }}
+          secret:
+            secretName: {{ template "external-dns.fullname" . }}
+          {{- else }}
           hostPath:
             path: /etc/kubernetes/azure.json
             type: File
           {{- end }}
+        {{- end }}
+        {{- if (eq .Values.provider "oci")}}
+        - name: oci-config-file
+          secret:
+            secretName: {{ template "external-dns.secretName" . }}
         {{- end }}
         {{- if and (eq .Values.provider "coredns") (.Values.coredns.etcdTLS.enabled) }}
         # CoreDNS volume(s)

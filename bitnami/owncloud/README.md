@@ -1,7 +1,13 @@
-# ownCloud
+<!--- app-name: ownCloud -->
 
-[ownCloud](https://owncloud.org/) is a file sharing server that puts the control and security of your own data back into your hands.
+# ownCloud packaged by Bitnami
 
+ownCloud is an open source content collaboration platform used to store and share files from any device. It grants data privacy, synchronization between devices, and file access control.
+
+[Overview of ownCloud](http://owncloud.org)
+
+Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
+                           
 ## TL;DR
 
 ```console
@@ -19,8 +25,8 @@ Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 - ReadWriteMany volumes for deployment scaling
 
@@ -56,7 +62,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
 | `global.storageClass`     | Global StorageClass for Persistent Volume(s)    | `""`  |
 
-
 ### Common parameters
 
 | Name               | Description                                                                              | Value |
@@ -66,14 +71,13 @@ The command removes all the Kubernetes components associated with the chart and 
 | `fullnameOverride` | String to fully override owncloud.fullname template                                      | `""`  |
 | `extraDeploy`      | Array of extra objects to deploy with the release (evaluated as a template)              | `[]`  |
 
-
 ### ownCloud parameters
 
 | Name                                    | Description                                                                                                  | Value                 |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------- |
 | `image.registry`                        | ownCloud image registry                                                                                      | `docker.io`           |
 | `image.repository`                      | ownCloud image repository                                                                                    | `bitnami/owncloud`    |
-| `image.tag`                             | ownCloud Image tag (immutable tags are recommended)                                                          | `10.9.0-debian-10-r0` |
+| `image.tag`                             | ownCloud Image tag (immutable tags are recommended)                                                          | `10.9.1-debian-10-r0` |
 | `image.pullPolicy`                      | ownCloud image pull policy                                                                                   | `IfNotPresent`        |
 | `image.pullSecrets`                     | Specify docker-registry secret names as an array                                                             | `[]`                  |
 | `image.debug`                           | Specify if debug logs should be enabled                                                                      | `false`               |
@@ -151,7 +155,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `podAnnotations`                        | Pod annotations                                                                                              | `{}`                  |
 | `podLabels`                             | Pod extra labels                                                                                             | `{}`                  |
 
-
 ### Database parameters
 
 | Name                                        | Description                                                                              | Value               |
@@ -175,7 +178,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `externalDatabase.database`                 | Name of the existing database                                                            | `bitnami_owncloud`  |
 | `externalDatabase.existingSecret`           | Name of an existing secret resource containing the DB password                           | `""`                |
 
-
 ### Persistence parameters
 
 | Name                        | Description                                                                | Value               |
@@ -188,7 +190,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `persistence.hostPath`      | If defined, the owncloud-data volume will mount to the specified hostPath. | `""`                |
 | `persistence.annotations`   | Persistent Volume Claim annotations                                        | `{}`                |
 
-
 ### Volume Permissions parameters
 
 | Name                                   | Description                                                                                                                                               | Value                   |
@@ -196,12 +197,11 @@ The command removes all the Kubernetes components associated with the chart and 
 | `volumePermissions.enabled`            | Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work) | `false`                 |
 | `volumePermissions.image.registry`     | Init container volume-permissions image registry                                                                                                          | `docker.io`             |
 | `volumePermissions.image.repository`   | Init container volume-permissions image repository                                                                                                        | `bitnami/bitnami-shell` |
-| `volumePermissions.image.tag`          | Init container volume-permissions image tag (immutable tags are recommended)                                                                              | `10-debian-10-r286`     |
+| `volumePermissions.image.tag`          | Init container volume-permissions image tag (immutable tags are recommended)                                                                              | `10-debian-10-r307`     |
 | `volumePermissions.image.pullPolicy`   | Init container volume-permissions image pull policy                                                                                                       | `IfNotPresent`          |
 | `volumePermissions.image.pullSecrets`  | Specify docker-registry secret names as an array                                                                                                          | `[]`                    |
 | `volumePermissions.resources.limits`   | The resources limits for the container                                                                                                                    | `{}`                    |
 | `volumePermissions.resources.requests` | The requested resources for the container                                                                                                                 | `{}`                    |
-
 
 ### Traffic Exposure Parameters
 
@@ -233,7 +233,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ingress.secrets`                  | If you're providing your own certificates, please use this to add the certificates as secrets                                    | `[]`                     |
 | `ingress.ingressClassName`         | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`                     |
 
-
 ### Metrics parameters
 
 | Name                                       | Description                                                          | Value                     |
@@ -241,7 +240,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `metrics.enabled`                          | Start a side-car prometheus exporter                                 | `false`                   |
 | `metrics.image.registry`                   | Apache exporter image registry                                       | `docker.io`               |
 | `metrics.image.repository`                 | Apache exporter image repository                                     | `bitnami/apache-exporter` |
-| `metrics.image.tag`                        | Apache exporter image tag (immutable tags are recommended)           | `0.11.0-debian-10-r3`     |
+| `metrics.image.tag`                        | Apache exporter image tag (immutable tags are recommended)           | `0.11.0-debian-10-r24`    |
 | `metrics.image.pullPolicy`                 | Image pull policy                                                    | `IfNotPresent`            |
 | `metrics.image.pullSecrets`                | Specify docker-registry secret names as an array                     | `[]`                      |
 | `metrics.resources`                        | Metrics exporter resource requests and limits                        | `{}`                      |
@@ -254,7 +253,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `metrics.service.externalTrafficPolicy`    | Metrics service external traffic policy                              | `Cluster`                 |
 | `metrics.service.sessionAffinity`          | Session Affinity for Kubernetes service, can be "None" or "ClientIP" | `None`                    |
 | `metrics.service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                          | `{}`                      |
-
 
 ### Certificate injection parameters
 
@@ -274,10 +272,9 @@ The command removes all the Kubernetes components associated with the chart and 
 | `certificates.extraEnvVarsSecret`                    | Secret with extra environment variables                              | `""`                                     |
 | `certificates.image.registry`                        | Container sidecar registry                                           | `docker.io`                              |
 | `certificates.image.repository`                      | Container sidecar image repository                                   | `bitnami/bitnami-shell`                  |
-| `certificates.image.tag`                             | Container sidecar image tag (immutable tags are recommended)         | `10-debian-10-r286`                      |
+| `certificates.image.tag`                             | Container sidecar image tag (immutable tags are recommended)         | `10-debian-10-r307`                      |
 | `certificates.image.pullPolicy`                      | Container sidecar image pull policy                                  | `IfNotPresent`                           |
 | `certificates.image.pullSecrets`                     | Container sidecar image pull secrets                                 | `[]`                                     |
-
 
 ### NetworkPolicy parameters
 
@@ -298,7 +295,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `networkPolicy.ingressRules.customRules`                      | Custom network policy ingress rule                                                                                           | `{}`    |
 | `networkPolicy.egressRules.denyConnectionsToExternal`         | Enable egress rule that denies outgoing traffic outside the cluster, except for DNS (port 53).                               | `false` |
 | `networkPolicy.egressRules.customRules`                       | Custom network policy rule                                                                                                   | `{}`    |
-
 
 The above parameters map to the env variables defined in [bitnami/owncloud](https://github.com/bitnami/bitnami-docker-owncloud). For more information please refer to the [bitnami/owncloud](https://github.com/bitnami/bitnami-docker-owncloud) image documentation.
 
@@ -422,9 +418,13 @@ kubectl create secret generic my-ca-1 --from-file my-ca-1.crt
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
+
+### To 12.0.0
+
+This major release bumps the MariaDB version to 10.6. Follow the [upstream instructions](https://mariadb.com/kb/en/upgrading-from-mariadb-105-to-mariadb-106/) for upgrading from MariaDB 10.5 to 10.6. No major issues are expected during the upgrade.
 
 ### To 11.0.0
 

@@ -122,7 +122,7 @@ Get the credentials secret.
 */}}
 {{- define "minio.secretName" -}}
 {{- if .Values.auth.existingSecret -}}
-    {{- printf "%s" .Values.auth.existingSecret -}}
+    {{- printf "%s" (tpl .Values.auth.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s" (include "common.names.fullname" .) -}}
 {{- end -}}
@@ -169,16 +169,6 @@ is true or default otherwise.
     {{- else -}}
         {{ default "default" .Values.serviceAccount.name }}
     {{- end -}}
-{{- end -}}
-
-{{/*
-Return true if cert-manager required annotations for TLS signed certificates are set in the Ingress annotations
-Ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
-*/}}
-{{- define "minio.ingress.certManagerRequest" -}}
-{{ if or (hasKey . "cert-manager.io/cluster-issuer") (hasKey . "cert-manager.io/issuer") }}
-    {{- true -}}
-{{- end -}}
 {{- end -}}
 
 {{/*

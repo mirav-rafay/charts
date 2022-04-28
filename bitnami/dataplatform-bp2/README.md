@@ -1,27 +1,13 @@
-# Data Platform Blueprint 2 with Kafka-Spark-Elasticsearch
+<!--- app-name: Data Platform Blueprint 2 -->
 
-Enterprise applications increasingly rely on large amounts of data, that needs be distributed, processed, and stored.
-Open source and commercial supported software stacks are available to implement a data platform, that can offer common data management services, accelerating the development and deployment of data hungry business applications.
+# Data Platform Blueprint 2 packaged by Bitnami
 
-This Helm chart enables the fully automated Kubernetes deployment of such multi-stack data platform, covering the following software components:
+This Helm chart can be used for the automated deployment of a data platform blueprint containing Kafka, Apache Spark and Elasticsearch. It covers optimized pod sizing and placement diversity rules.
 
--   Apache Kafka              – Data distribution bus with buffering capabilities
--   Apache Spark              – In-memory data analytics
--   Elasticsearch with Kibana – Data persistence and search
--   Logstash                  - Data Processing Pipeline
--   Data Platform Signature State Controller - Kubernetes controller that emits data platform health and state metrics in Prometheus format.
+[Overview of Data Platform Blueprint 2](https://github.com/bitnami/dataplatform-emitter)
 
-These containerized stateful software stacks are deployed in multi-node cluster configurations, which is defined by the Helm Chart blueprint for this data platform deployment, covering:
 
--   Pod placement rules – Affinity rules to ensure placement diversity to prevent single point of failures and optimize load distribution
--   Pod resource sizing rules – Optimized Pod and JVM sizing settings for optimal performance and efficient resource usage
--   Default settings to ensure Pod access security
--   Optional [Tanzu Observability](https://docs.wavefront.com/kubernetes.html) framework configuration.
-
-In addition to the Pod resource optimizations, this blueprint is validated and tested to provide Kubernetes node count and sizing recommendations [(see Kubernetes Cluster Requirements)](#kubernetes-cluster-requirements) to facilitate cloud platform capacity planning. The goal is optimize the number of required Kubernetes nodes in order to optimize server resource usage and, at the same time, ensuring runtime and resource diversity.
-
-This blueprint, in its default configuration, deploys the data platform on a Kubernetes cluster with three worker nodes. Use cases for this data platform setup include: data and application evaluation, development, and functional testing.
-
+                           
 ## TL;DR
 
 ```console
@@ -30,6 +16,28 @@ $ helm install my-release bitnami/dataplatform-bp2
 ```
 
 ## Introduction
+
+Enterprise applications increasingly rely on large amounts of data, that needs be distributed, processed, and stored.
+Open source and commercial supported software stacks are available to implement a data platform, that can offer common data management services, accelerating the development and deployment of data hungry business applications.
+
+This Helm chart enables the fully automated Kubernetes deployment of such multi-stack data platform, covering the following software components:
+
+-   Apache Kafka              - Data distribution bus with buffering capabilities
+-   Apache Spark              - In-memory data analytics
+-   Elasticsearch with Kibana - Data persistence and search
+-   Logstash                  - Data Processing Pipeline
+-   Data Platform Signature State Controller - Kubernetes controller that emits data platform health and state metrics in Prometheus format.
+
+These containerized stateful software stacks are deployed in multi-node cluster configurations, which is defined by the Helm Chart blueprint for this data platform deployment, covering:
+
+-   Pod placement rules - Affinity rules to ensure placement diversity to prevent single point of failures and optimize load distribution
+-   Pod resource sizing rules - Optimized Pod and JVM sizing settings for optimal performance and efficient resource usage
+-   Default settings to ensure Pod access security
+-   Optional [Tanzu Observability](https://docs.wavefront.com/kubernetes.html) framework configuration.
+
+In addition to the Pod resource optimizations, this blueprint is validated and tested to provide Kubernetes node count and sizing recommendations [(see Kubernetes Cluster Requirements)](#kubernetes-cluster-requirements) to facilitate cloud platform capacity planning. The goal is optimize the number of required Kubernetes nodes in order to optimize server resource usage and, at the same time, ensuring runtime and resource diversity.
+
+This blueprint, in its default configuration, deploys the data platform on a Kubernetes cluster with three worker nodes. Use cases for this data platform setup include: data and application evaluation, development, and functional testing.
 
 This chart bootstraps Data Platform Blueprint-2 deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
@@ -45,8 +53,8 @@ The data platform can be optionally deployed with the Tanzu observability framew
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 
 ## Kubernetes Cluster requirements
@@ -113,7 +121,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `dataplatform.exporter.enabled`                               | Start a prometheus exporter                                                                                      | `true`                          |
 | `dataplatform.exporter.image.registry`                        | dataplatform exporter image registry                                                                             | `docker.io`                     |
 | `dataplatform.exporter.image.repository`                      | dataplatform exporter image repository                                                                           | `bitnami/dataplatform-exporter` |
-| `dataplatform.exporter.image.tag`                             | dataplatform exporter image tag (immutable tags are recommended)                                                 | `1.0.1-scratch-r0`              |
+| `dataplatform.exporter.image.tag`                             | dataplatform exporter image tag (immutable tags are recommended)                                                 | `1.0.1-scratch-r5`              |
 | `dataplatform.exporter.image.pullPolicy`                      | dataplatform exporter image pull policy                                                                          | `IfNotPresent`                  |
 | `dataplatform.exporter.image.pullSecrets`                     | Specify docker-registry secret names as an array                                                                 | `[]`                            |
 | `dataplatform.exporter.config`                                | Data Platform Metrics Configuration emitted in Prometheus format                                                 | `""`                            |
@@ -179,7 +187,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `dataplatform.emitter.enabled`                                | Start Data Platform metrics emitter                                                                              | `true`                          |
 | `dataplatform.emitter.image.registry`                         | Data Platform emitter image registry                                                                             | `docker.io`                     |
 | `dataplatform.emitter.image.repository`                       | Data Platform emitter image repository                                                                           | `bitnami/dataplatform-emitter`  |
-| `dataplatform.emitter.image.tag`                              | Data Platform emitter image tag (immutable tags are recommended)                                                 | `1.0.1-scratch-r1`              |
+| `dataplatform.emitter.image.tag`                              | Data Platform emitter image tag (immutable tags are recommended)                                                 | `1.0.1-scratch-r8`              |
 | `dataplatform.emitter.image.pullPolicy`                       | Data Platform emitter image pull policy                                                                          | `IfNotPresent`                  |
 | `dataplatform.emitter.image.pullSecrets`                      | Specify docker-registry secret names as an array                                                                 | `[]`                            |
 | `dataplatform.emitter.livenessProbe.enabled`                  | Enable livenessProbe                                                                                             | `true`                          |
@@ -520,7 +528,7 @@ Bitnami will release a new chart updating its containers if a new version of the
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 In order to render complete information about the deployment including all the sub-charts, please use --render-subchart-notes flag while installing the chart.
 
@@ -533,6 +541,22 @@ Elasticsearch dependency version was bumped to a new major version changing the 
 Regular upgrade is compatible from previous versions.
 
 ## Upgrading
+
+### To 12.0.0
+
+This major updates the Kafka subchart to it newest major, 16.0.0. [Here](https://github.com/bitnami/charts/tree/master/bitnami/kafka#to-1600) you can find more information about the changes introduced in that version.
+
+### To 10.0.0
+
+This major release updates the Kafka subchart to its newest major `15.x.x`, which contain several changes in the supported values and bumps Kafka major version to `3.x` series (check the [upgrade notes](https://github.com/bitnami/charts/blob/master/bitnami/kafka/README.md#to-1500) to obtain more information).
+
+To upgrade to *10.0.0* from *9.x* it's recommended to maintain the Kafka `2.x` series (to avoid incompatibility issues). To do so, follow the instructions below (the following example assumes that the release name is *dataplatform* and the release namespace *default*):
+
+```bash
+export CURRENT_KAFKA_VERSION=$(kubectl exec dataplatform-kafka-0 -- bash -c 'echo $BITNAMI_IMAGE_VERSION')
+helm upgrade dataplatform bitnami/dataplatform-bp2 \
+  --set kafka.image.tag=$CURRENT_KAFKA_VERSION
+```
 
 ### To 9.0.0
 

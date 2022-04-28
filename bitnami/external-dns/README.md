@@ -1,7 +1,13 @@
-# external-dns
+<!--- app-name: ExternalDNS -->
 
-[ExternalDNS](https://github.com/kubernetes-sigs/external-dns) is a Kubernetes addon that configures public DNS servers with information about exposed Kubernetes services to make them discoverable.
+# ExternalDNS packaged by Bitnami
 
+ExternalDNS is a Kubernetes addon that configures public DNS servers with information about exposed Kubernetes services to make them discoverable.
+
+[Overview of ExternalDNS](https://github.com/kubernetes-incubator/external-dns)
+
+Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
+                           
 ## TL;DR
 
 ```console
@@ -18,7 +24,7 @@ Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
 ## Prerequisites
 
 - Kubernetes 1.19+
-- Helm 3.1.0
+- Helm 3.2.0+
 
 ## Installing the Chart
 
@@ -64,13 +70,14 @@ The command removes all the Kubernetes components associated with the chart and 
 | `extraDeploy`       | Array of extra objects to deploy with the release (evaluated as a template).                 | `[]`            |
 | `kubeVersion`       | Force target Kubernetes version (using Helm capabilities if not set)                         | `""`            |
 
+
 ### external-dns parameters
 
 | Name                                          | Description                                                                                                                                                                  | Value                     |
 | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
 | `image.registry`                              | ExternalDNS image registry                                                                                                                                                   | `docker.io`               |
 | `image.repository`                            | ExternalDNS image repository                                                                                                                                                 | `bitnami/external-dns`    |
-| `image.tag`                                   | ExternalDNS Image tag (immutable tags are recommended)                                                                                                                       | `0.10.1-debian-10-r33`    |
+| `image.tag`                                   | ExternalDNS Image tag (immutable tags are recommended)                                                                                                                       | `0.11.1-debian-10-r0`     |
 | `image.pullPolicy`                            | ExternalDNS image pull policy                                                                                                                                                | `IfNotPresent`            |
 | `image.pullSecrets`                           | ExternalDNS image pull secrets                                                                                                                                               | `[]`                      |
 | `hostAliases`                                 | Deployment pod host aliases                                                                                                                                                  | `[]`                      |
@@ -148,7 +155,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `google.serviceAccountSecret`                 | When using the Google provider, specify the existing secret which contains credentials.json (optional)                                                                       | `""`                      |
 | `google.serviceAccountSecretKey`              | When using the Google provider with an existing secret, specify the key name (optional)                                                                                      | `credentials.json`        |
 | `google.serviceAccountKey`                    | When using the Google provider, specify the service account key JSON file. In this case a new secret will be created holding this service account (optional)                 | `""`                      |
-| `google.zoneVisibility`                       | When using the Google provider, fiter for zones of a specific visibility (private or public)                 | `""`                      |
+| `google.zoneVisibility`                       | When using the Google provider, fiter for zones of a specific visibility (private or public)                                                                                 | `""`                      |
 | `hetzner.token`                               | When using the Hetzner provider, specify your token here. (required when `hetzner.secretName` is not provided. In this case a new secret will be created holding the token.) | `""`                      |
 | `hetzner.secretName`                          | When using the Hetzner provider, specify the existing secret which contains your token. Disables the usage of `hetzner.token` (optional)                                     | `""`                      |
 | `hetzner.secretKey`                           | When using the Hetzner provider with an existing secret, specify the key name (optional)                                                                                     | `hetzner_token`           |
@@ -167,6 +174,15 @@ The command removes all the Kubernetes components associated with the chart and 
 | `linode.apiToken`                             | When using the Linode provider, `LINODE_TOKEN` to set (optional)                                                                                                             | `""`                      |
 | `linode.secretName`                           | Use an existing secret with key "linode_api_token" defined.                                                                                                                  | `""`                      |
 | `ns1.minTTL`                                  | When using the ns1 provider, specify minimal TTL, as an integer, for records                                                                                                 | `10`                      |
+| `ns1.apiKey`                                  | When using the ns1 provider, specify the API key to use                                                                                                                      | `""`                      |
+| `ns1.secretName`                              | Use an existing secret with key "ns1-api-key" defined.                                                                                                                       | `""`                      |
+| `oci.region`                                  | When using the OCI provider, specify the region, where your zone is located in.                                                                                              | `""`                      |
+| `oci.tenancyOCID`                             | When using the OCI provider, specify your Tenancy OCID                                                                                                                       | `""`                      |
+| `oci.userOCID`                                | When using the OCI provider, specify your User OCID                                                                                                                          | `""`                      |
+| `oci.compartmentOCID`                         | When using the OCI provider, specify your Compartment OCID where your DNS Zone is located in.                                                                                | `""`                      |
+| `oci.privateKey`                              | When using the OCI provider, paste in your RSA private key file for the Oracle API                                                                                           | `""`                      |
+| `oci.privateKeyFingerprint`                   | When using the OCI provider, put in the fingerprint of your privateKey                                                                                                       | `""`                      |
+| `oci.privateKeyPassphrase`                    | When using the OCI provider and your privateKey has a passphrase, put it in here. (optional)                                                                                 | `""`                      |
 | `ovh.consumerKey`                             | When using the OVH provider, specify the existing consumer key. (required when provider=ovh and `ovh.secretName` is not provided.)                                           | `""`                      |
 | `ovh.applicationKey`                          | When using the OVH provider with an existing application, specify the application key. (required when provider=ovh and `ovh.secretName` is not provided.)                    | `""`                      |
 | `ovh.applicationSecret`                       | When using the OVH provider with an existing application, specify the application secret. (required when provider=ovh and `ovh.secretName` is not provided.)                 | `""`                      |
@@ -258,7 +274,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `rbac.create`                                 | Whether to create & use RBAC resources or not                                                                                                                                | `true`                    |
 | `rbac.clusterRole`                            | Whether to create Cluster Role. When set to false creates a Role in `namespace`                                                                                              | `true`                    |
 | `rbac.apiVersion`                             | Version of the RBAC API                                                                                                                                                      | `v1`                      |
-| `rbac.pspEnabled`                             | PodSecurityPolicy                                                                                                                                                            | `false`                   |
+| `rbac.pspEnabled`                             | Whether to create a PodSecurityPolicy. WARNING: PodSecurityPolicy is deprecated in Kubernetes v1.21 or later, unavailable in v1.25 or later                                  | `false`                   |
 | `containerSecurityContext`                    | Security context for the container                                                                                                                                           | `{}`                      |
 | `podSecurityContext.enabled`                  | Enable pod security context                                                                                                                                                  | `true`                    |
 | `podSecurityContext.fsGroup`                  | Group ID for the container                                                                                                                                                   | `1001`                    |
@@ -277,7 +293,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `readinessProbe.timeoutSeconds`               | Timeout seconds for readinessProbe                                                                                                                                           | `5`                       |
 | `readinessProbe.failureThreshold`             | Failure threshold for readinessProbe                                                                                                                                         | `6`                       |
 | `readinessProbe.successThreshold`             | Success threshold for readinessProbe                                                                                                                                         | `1`                       |
-| `startupProbe.enabled`                        | Enable startupProbe                                                                                                                                                          | `true`                    |
+| `startupProbe.enabled`                        | Enable startupProbe                                                                                                                                                          | `false`                   |
 | `startupProbe.initialDelaySeconds`            | Initial delay seconds for startupProbe                                                                                                                                       | `5`                       |
 | `startupProbe.periodSeconds`                  | Period seconds for startupProbe                                                                                                                                              | `10`                      |
 | `startupProbe.timeoutSeconds`                 | Timeout seconds for startupProbe                                                                                                                                             | `5`                       |
@@ -362,7 +378,7 @@ $ helm install my-release \
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 ## Upgrading
 
 ### To 6.0.0

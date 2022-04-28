@@ -1,7 +1,13 @@
-# Spring Cloud Data Flow
+<!--- app-name: Spring Cloud Data Flow -->
 
-[Spring Cloud Data Flow](https://dataflow.spring.io/) is a microservices-based Streaming and Batch data processing pipeline in Cloud Foundry and Kubernetes.
+# Spring Cloud Data Flow packaged by Bitnami
 
+Spring Cloud Data Flow is a microservices-based toolkit for building streaming and batch data processing pipelines in Cloud Foundry and Kubernetes.
+
+[Overview of Spring Cloud Data Flow](https://github.com/spring-cloud/spring-cloud-dataflow)
+
+
+                           
 ## TL;DR
 
 ```bash
@@ -17,8 +23,8 @@ Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
@@ -52,7 +58,6 @@ helm uninstall my-release
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
 | `global.storageClass`     | Global StorageClass for Persistent Volume(s)    | `""`  |
 
-
 ### Common parameters
 
 | Name                | Description                                                                           | Value           |
@@ -65,21 +70,20 @@ helm uninstall my-release
 | `clusterDomain`     | Default Kubernetes cluster domain                                                     | `cluster.local` |
 | `extraDeploy`       | Array of extra objects to deploy with the release                                     | `[]`            |
 
-
 ### Dataflow Server parameters
 
 | Name                                                | Description                                                                                                                      | Value                                                |
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `server.image.registry`                             | Spring Cloud Dataflow image registry                                                                                             | `docker.io`                                          |
 | `server.image.repository`                           | Spring Cloud Dataflow image repository                                                                                           | `bitnami/spring-cloud-dataflow`                      |
-| `server.image.tag`                                  | Spring Cloud Dataflow image tag (immutable tags are recommended)                                                                 | `2.9.1-debian-10-r54`                                |
+| `server.image.tag`                                  | Spring Cloud Dataflow image tag (immutable tags are recommended)                                                                 | `2.9.2-debian-10-r0`                                 |
 | `server.image.pullPolicy`                           | Spring Cloud Dataflow image pull policy                                                                                          | `IfNotPresent`                                       |
 | `server.image.pullSecrets`                          | Specify docker-registry secret names as an array                                                                                 | `[]`                                                 |
 | `server.image.debug`                                | Enable image debug mode                                                                                                          | `false`                                              |
 | `server.hostAliases`                                | Deployment pod host aliases                                                                                                      | `[]`                                                 |
 | `server.composedTaskRunner.image.registry`          | Spring Cloud Dataflow Composed Task Runner image registry                                                                        | `docker.io`                                          |
 | `server.composedTaskRunner.image.repository`        | Spring Cloud Dataflow Composed Task Runner image repository                                                                      | `bitnami/spring-cloud-dataflow-composed-task-runner` |
-| `server.composedTaskRunner.image.tag`               | Spring Cloud Dataflow Composed Task Runner image tag (immutable tags are recommended)                                            | `2.9.1-debian-10-r59`                                |
+| `server.composedTaskRunner.image.tag`               | Spring Cloud Dataflow Composed Task Runner image tag (immutable tags are recommended)                                            | `2.9.2-debian-10-r0`                                 |
 | `server.configuration.streamingEnabled`             | Enables or disables streaming data processing                                                                                    | `true`                                               |
 | `server.configuration.batchEnabled`                 | Enables or disables batch data (tasks and schedules) processing                                                                  | `true`                                               |
 | `server.configuration.accountName`                  | The name of the account to configure for the Kubernetes platform                                                                 | `default`                                            |
@@ -177,7 +181,7 @@ helm uninstall my-release
 | `server.jdwp.enabled`                               | Set to true to enable Java debugger                                                                                              | `false`                                              |
 | `server.jdwp.port`                                  | Specify port for remote debugging                                                                                                | `5005`                                               |
 | `server.proxy`                                      | Add proxy configuration for SCDF server                                                                                          | `{}`                                                 |
-
+| `server.applicationProperties`                      | Specify common application properties added by SCDF server to streams and/or tasks                                               | `{}`                                                 |
 
 ### Dataflow Skipper parameters
 
@@ -187,7 +191,7 @@ helm uninstall my-release
 | `skipper.hostAliases`                        | Deployment pod host aliases                                                                               | `[]`                           |
 | `skipper.image.registry`                     | Spring Cloud Skipper image registry                                                                       | `docker.io`                    |
 | `skipper.image.repository`                   | Spring Cloud Skipper image repository                                                                     | `bitnami/spring-cloud-skipper` |
-| `skipper.image.tag`                          | Spring Cloud Skipper image tag (immutable tags are recommended)                                           | `2.8.1-debian-10-r58`          |
+| `skipper.image.tag`                          | Spring Cloud Skipper image tag (immutable tags are recommended)                                           | `2.8.2-debian-10-r1`           |
 | `skipper.image.pullPolicy`                   | Spring Cloud Skipper image pull policy                                                                    | `IfNotPresent`                 |
 | `skipper.image.pullSecrets`                  | Specify docker-registry secret names as an array                                                          | `[]`                           |
 | `skipper.image.debug`                        | Enable image debug mode                                                                                   | `false`                        |
@@ -270,23 +274,25 @@ helm uninstall my-release
 | `externalSkipper.host`                       | Host of a external Skipper Server                                                                         | `localhost`                    |
 | `externalSkipper.port`                       | External Skipper Server port number                                                                       | `7577`                         |
 
-
 ### Deployer parameters
 
-| Name                                          | Description                                                                                 | Value  |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------- | ------ |
-| `deployer.resources.limits`                   | Streaming applications resource limits                                                      | `{}`   |
-| `deployer.resources.requests`                 | Streaming applications resource requests                                                    | `{}`   |
-| `deployer.readinessProbe.initialDelaySeconds` | Initial delay seconds for readinessProbe                                                    | `120`  |
-| `deployer.livenessProbe.initialDelaySeconds`  | Initial delay seconds for livenessProbe                                                     | `90`   |
-| `deployer.nodeSelector`                       | The node selectors to apply to the streaming applications deployments in "key:value" format | `""`   |
-| `deployer.tolerations`                        | Streaming applications tolerations                                                          | `{}`   |
-| `deployer.volumeMounts`                       | Streaming applications extra volume mounts                                                  | `{}`   |
-| `deployer.volumes`                            | Streaming applications extra volumes                                                        | `{}`   |
-| `deployer.environmentVariables`               | Streaming applications environment variables                                                | `[]`   |
-| `deployer.podSecurityContext.runAsUser`       | Set Dataflow Streams container's Security Context runAsUser                                 | `1001` |
-| `deployer.imagePullSecrets`                   | Streaming applications imagePullSecrets                                                     | `[]`   |
-
+| Name                                          | Description                                                                                                                                     | Value          |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `deployer.resources.limits`                   | Streaming applications resource limits                                                                                                          | `{}`           |
+| `deployer.resources.requests`                 | Streaming applications resource requests                                                                                                        | `{}`           |
+| `deployer.readinessProbe.initialDelaySeconds` | Initial delay seconds for readinessProbe                                                                                                        | `120`          |
+| `deployer.livenessProbe.initialDelaySeconds`  | Initial delay seconds for livenessProbe                                                                                                         | `90`           |
+| `deployer.nodeSelector`                       | The node selectors to apply to the streaming applications deployments in "key:value" format                                                     | `""`           |
+| `deployer.tolerations`                        | Streaming applications tolerations                                                                                                              | `{}`           |
+| `deployer.volumeMounts`                       | Streaming applications extra volume mounts                                                                                                      | `{}`           |
+| `deployer.volumes`                            | Streaming applications extra volumes                                                                                                            | `{}`           |
+| `deployer.environmentVariables`               | Streaming applications environment variables                                                                                                    | `[]`           |
+| `deployer.podSecurityContext.enabled`         | Enabled pods' Security Context of the deployed pods batch or stream pods                                                                        | `true`         |
+| `deployer.podSecurityContext.runAsUser`       | Set Dataflow Streams container's Security Context runAsUser                                                                                     | `1001`         |
+| `deployer.imagePullSecrets`                   | Streaming applications imagePullSecrets                                                                                                         | `[]`           |
+| `deployer.secretRefs`                         | Streaming applications secretRefs                                                                                                               | `[]`           |
+| `deployer.entryPointStyle`                    | An entry point style affects how application properties are passed to the container to be deployed. Allowed values: exec (default), shell, boot | `exec`         |
+| `deployer.imagePullPolicy`                    | An image pull policy defines when a Docker image should be pulled to the local registry. Allowed values: IfNotPresent (default), Always, Never  | `IfNotPresent` |
 
 ### RBAC parameters
 
@@ -298,7 +304,6 @@ helm uninstall my-release
 | `serviceAccount.annotations`                  | Annotations for service account. Evaluated as a template. Only used if `create` is `true`.                              | `{}`   |
 | `rbac.create`                                 | Whether to create and use RBAC resources or not                                                                         | `true` |
 
-
 ### Metrics parameters
 
 | Name                                         | Description                                                                                                                | Value                              |
@@ -306,7 +311,7 @@ helm uninstall my-release
 | `metrics.enabled`                            | Enable Prometheus metrics                                                                                                  | `false`                            |
 | `metrics.image.registry`                     | Prometheus Rsocket Proxy image registry                                                                                    | `docker.io`                        |
 | `metrics.image.repository`                   | Prometheus Rsocket Proxy image repository                                                                                  | `bitnami/prometheus-rsocket-proxy` |
-| `metrics.image.tag`                          | Prometheus Rsocket Proxy image tag (immutable tags are recommended)                                                        | `1.3.0-debian-10-r365`             |
+| `metrics.image.tag`                          | Prometheus Rsocket Proxy image tag (immutable tags are recommended)                                                        | `1.3.0-debian-10-r386`             |
 | `metrics.image.pullPolicy`                   | Prometheus Rsocket Proxy image pull policy                                                                                 | `IfNotPresent`                     |
 | `metrics.image.pullSecrets`                  | Specify docker-registry secret names as an array                                                                           | `[]`                               |
 | `metrics.resources.limits`                   | The resources limits for the Prometheus Rsocket Proxy container                                                            | `{}`                               |
@@ -375,20 +380,18 @@ helm uninstall my-release
 | `metrics.autoscaling.targetCPU`              | Target CPU utilization percentage                                                                                          | `""`                               |
 | `metrics.autoscaling.targetMemory`           | Target Memory utilization percentage                                                                                       | `""`                               |
 
-
 ### Init Container parameters
 
-| Name                                 | Description                                                                                       | Value                  |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------- | ---------------------- |
-| `waitForBackends.enabled`            | Wait for the database and other services (such as Kafka or RabbitMQ) used when enabling streaming | `true`                 |
-| `waitForBackends.image.registry`     | Init container wait-for-backend image registry                                                    | `docker.io`            |
-| `waitForBackends.image.repository`   | Init container wait-for-backend image name                                                        | `bitnami/kubectl`      |
-| `waitForBackends.image.tag`          | Init container wait-for-backend image tag                                                         | `1.23.1-debian-10-r12` |
-| `waitForBackends.image.pullPolicy`   | Init container wait-for-backend image pull policy                                                 | `IfNotPresent`         |
-| `waitForBackends.image.pullSecrets`  | Specify docker-registry secret names as an array                                                  | `[]`                   |
-| `waitForBackends.resources.limits`   | Init container wait-for-backend resource limits                                                   | `{}`                   |
-| `waitForBackends.resources.requests` | Init container wait-for-backend resource requests                                                 | `{}`                   |
-
+| Name                                 | Description                                                                                       | Value                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------- | --------------------- |
+| `waitForBackends.enabled`            | Wait for the database and other services (such as Kafka or RabbitMQ) used when enabling streaming | `true`                |
+| `waitForBackends.image.registry`     | Init container wait-for-backend image registry                                                    | `docker.io`           |
+| `waitForBackends.image.repository`   | Init container wait-for-backend image name                                                        | `bitnami/kubectl`     |
+| `waitForBackends.image.tag`          | Init container wait-for-backend image tag                                                         | `1.23.2-debian-10-r0` |
+| `waitForBackends.image.pullPolicy`   | Init container wait-for-backend image pull policy                                                 | `IfNotPresent`        |
+| `waitForBackends.image.pullSecrets`  | Specify docker-registry secret names as an array                                                  | `[]`                  |
+| `waitForBackends.resources.limits`   | Init container wait-for-backend resource limits                                                   | `{}`                  |
+| `waitForBackends.resources.requests` | Init container wait-for-backend resource requests                                                 | `{}`                  |
 
 ### Database parameters
 
@@ -419,7 +422,6 @@ helm uninstall my-release
 | `externalDatabase.skipper.username`       | Existing username in the external db to be used by Skipper server                                   | `skipper`    |
 | `externalDatabase.hibernateDialect`       | Hibernate Dialect used by Dataflow/Skipper servers                                                  | `""`         |
 
-
 ### RabbitMQ chart parameters
 
 | Name                                      | Description                                                                     | Value       |
@@ -434,7 +436,6 @@ helm uninstall my-release
 | `externalRabbitmq.vhost`                  | External RabbitMQ virtual host. It will be saved in a kubernetes secret         | `""`        |
 | `externalRabbitmq.existingPasswordSecret` | Existing secret with RabbitMQ password. It will be saved in a kubernetes secret | `""`        |
 
-
 ### Kafka chart parameters
 
 | Name                                  | Description                             | Value            |
@@ -446,7 +447,6 @@ helm uninstall my-release
 | `externalKafka.enabled`               | Enable/disable external Kafka           | `false`          |
 | `externalKafka.brokers`               | External Kafka brokers                  | `localhost:9092` |
 | `externalKafka.zkNodes`               | External Zookeeper nodes                | `localhost:2181` |
-
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
@@ -651,6 +651,39 @@ Find more information about how to deal with common errors related to Bitnami He
 
 If you enabled RabbitMQ chart to be used as the messaging solution for Skipper to manage streaming content, then it's necessary to set the `rabbitmq.auth.password` and `rabbitmq.auth.erlangCookie` parameters when upgrading for readiness/liveness probes to work properly. Inspect the RabbitMQ secret to obtain the password and the Erlang cookie, then you can upgrade your chart using the command below:
 
+### To 8.0.0
+
+This major release bumps the MariaDB version to 10.6. Follow the [upstream instructions](https://mariadb.com/kb/en/upgrading-from-mariadb-105-to-mariadb-106/) for upgrading from MariaDB 10.5 to 10.6. No major issues are expected during the upgrade.
+
+### To 7.0.0
+
+This major updates the Kafka subchart to it newest major, 16.0.0. [Here](https://github.com/bitnami/charts/tree/master/bitnami/kafka#to-1600) you can find more information about the changes introduced in that version.
+
+### To 6.0.0
+
+This major release updates the Kafka subchart to its newest major `15.x.x`, which contain several changes in the supported values and bumps Kafka major version to `3.x` series (check the [upgrade notes](https://github.com/bitnami/charts/blob/master/bitnami/kafka/README.md#to-1500) to obtain more information).
+
+To upgrade to *6.0.0* from *5.x* using Kafka as messaging solution, it should be done maintaining the Kafka `2.x` series. To do so, follow the instructions below (the following example assumes that the release name is *scdf* and the release namespace *default*):
+
+1. Obtain the credentials on your current release:
+
+```bash
+export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
+export MARIADB_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-password}" | base64 --decode)
+```
+
+2. Upgrade your release using the same Kafka version:
+
+```bash
+export CURRENT_KAFKA_VERSION=$(kubectl exec scdf-kafka-0 -- bash -c 'echo $BITNAMI_IMAGE_VERSION')
+helm upgrade scdf bitnami/spring-cloud-dataflow \
+  --set rabbitmq.enabled=false \
+  --set kafka.enabled=true \
+  --set kafka.image.tag=$CURRENT_KAFKA_VERSION \
+  --set mariadb.auth.password=$MARIADB_PASSWORD \
+  --set mariadb.auth.rootPassword=$MARIADB_ROOT_PASSWORD
+```
+
 ### To 5.0.0
 
 This major release renames several values in this chart and adds missing features, in order to be inline with the rest of assets in the Bitnami charts repository.
@@ -706,11 +739,9 @@ helm upgrade my-release bitnami/spring-cloud-dataflow --set mariadb.rootUser.pas
 helm upgrade my-release bitnami/spring-cloud-dataflow --set mariadb.auth.rootPassword=[MARIADB_ROOT_PASSWORD] --set rabbitmq.auth.password=[RABBITMQ_PASSWORD] --set rabbitmq.auth.erlangCookie=[RABBITMQ_ERLANG_COOKIE]
 ```
 
-## Notable changes
+### To 1.0.0
 
-### v1.0.0
-
-MariaDB dependency version was bumped to a new major version that introduces several incompatilibites. Therefore, backwards compatibility is not guaranteed unless an external database is used. Check [MariaDB Upgrading Notes](https://github.com/bitnami/charts/tree/master/bitnami/mariadb#to-800) for more information.
+MariaDB dependency version was bumped to a new major version that introduces several incompatibilities. Therefore, backwards compatibility is not guaranteed unless an external database is used. Check [MariaDB Upgrading Notes](https://github.com/bitnami/charts/tree/master/bitnami/mariadb#to-800) for more information.
 
 To upgrade to `1.0.0`, you will need to reuse the PVC used to hold the MariaDB data on your previous release. To do so, follow the instructions below (the following example assumes that the release name is `dataflow`):
 
@@ -718,7 +749,7 @@ To upgrade to `1.0.0`, you will need to reuse the PVC used to hold the MariaDB d
 
 Obtain the credentials and the name of the PVC used to hold the MariaDB data on your current release:
 
-```console
+```bash
 export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
 export MARIADB_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-password}" | base64 --decode)
 export MARIADB_PVC=$(kubectl get pvc -l app=mariadb,component=master,release=dataflow -o jsonpath="{.items[0].metadata.name}")
@@ -728,8 +759,8 @@ export RABBITMQ_ERLANG_COOKIE=$(kubectl get secret --namespace default dataflow-
 
 Upgrade your release (maintaining the version) disabling MariaDB and scaling Data Flow replicas to 0:
 
-```console
-$ helm upgrade dataflow bitnami/spring-cloud-dataflow --version 0.7.4 \
+```bash
+helm upgrade dataflow bitnami/spring-cloud-dataflow --version 0.7.4 \
   --set server.replicaCount=0 \
   --set skipper.replicaCount=0 \
   --set mariadb.enabled=false \
@@ -739,8 +770,8 @@ $ helm upgrade dataflow bitnami/spring-cloud-dataflow --version 0.7.4 \
 
 Finally, upgrade you release to 1.0.0 reusing the existing PVC, and enabling back MariaDB:
 
-```console
-$ helm upgrade dataflow bitnami/spring-cloud-dataflow \
+```bash
+helm upgrade dataflow bitnami/spring-cloud-dataflow \
   --set mariadb.primary.persistence.existingClaim=$MARIADB_PVC \
   --set mariadb.auth.rootPassword=$MARIADB_ROOT_PASSWORD \
   --set mariadb.auth.password=$MARIADB_PASSWORD \

@@ -96,8 +96,15 @@ spec:
             - --contour-cert-file=/certs/tls.crt
             - --contour-key-file=/certs/tls.key
             - --config-path=/config/contour.yaml
+            {{- if .Values.contour.debug }}
+            - --debug
+            {{- end }}
+            - --kubernetes-debug={{ .Values.contour.kubernetesDebug }}
             {{- if (include "contour.isIngressClassNameDefined" .) }}
             - --ingress-class-name={{ include "contour.ingressClassName" . }}
+            {{- end }}
+            {{- if .Values.contour.rootNamespaces }}
+            - --root-namespaces={{ .Values.contour.rootNamespaces }}
             {{- end }}
             {{- if .Values.contour.extraArgs }}
             {{- include "common.tplvalues.render" (dict "value" .Values.contour.extraArgs "context" $) | nindent 12 }}
