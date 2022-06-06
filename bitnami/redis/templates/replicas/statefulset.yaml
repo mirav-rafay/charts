@@ -406,9 +406,11 @@ spec:
         {{- end }}
         - name: redis-tmp-conf
           {{- if .Values.replica.persistence.medium }}
-          emptyDir: {
+          emptyDir:
             medium: {{ .Values.replica.persistence.medium | quote }}
-          }
+            {{- if .Values.replica.persistence.sizeLimit }}
+            sizeLimit: {{ .Values.replica.persistence.sizeLimit | quote }}
+            {{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
@@ -433,6 +435,10 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+  {{- else if .Values.replica.persistence.existingClaim }}
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: {{ printf "%s" (tpl .Values.replica.persistence.existingClaim .) }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

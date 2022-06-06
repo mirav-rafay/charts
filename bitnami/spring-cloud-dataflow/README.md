@@ -6,8 +6,6 @@ Spring Cloud Data Flow is a microservices-based toolkit for building streaming a
 
 [Overview of Spring Cloud Data Flow](https://github.com/spring-cloud/spring-cloud-dataflow)
 
-
-                           
 ## TL;DR
 
 ```bash
@@ -76,14 +74,14 @@ helm uninstall my-release
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `server.image.registry`                             | Spring Cloud Dataflow image registry                                                                                             | `docker.io`                                          |
 | `server.image.repository`                           | Spring Cloud Dataflow image repository                                                                                           | `bitnami/spring-cloud-dataflow`                      |
-| `server.image.tag`                                  | Spring Cloud Dataflow image tag (immutable tags are recommended)                                                                 | `2.9.2-debian-10-r0`                                 |
+| `server.image.tag`                                  | Spring Cloud Dataflow image tag (immutable tags are recommended)                                                                 | `2.9.4-debian-10-r33`                                |
 | `server.image.pullPolicy`                           | Spring Cloud Dataflow image pull policy                                                                                          | `IfNotPresent`                                       |
 | `server.image.pullSecrets`                          | Specify docker-registry secret names as an array                                                                                 | `[]`                                                 |
 | `server.image.debug`                                | Enable image debug mode                                                                                                          | `false`                                              |
 | `server.hostAliases`                                | Deployment pod host aliases                                                                                                      | `[]`                                                 |
 | `server.composedTaskRunner.image.registry`          | Spring Cloud Dataflow Composed Task Runner image registry                                                                        | `docker.io`                                          |
 | `server.composedTaskRunner.image.repository`        | Spring Cloud Dataflow Composed Task Runner image repository                                                                      | `bitnami/spring-cloud-dataflow-composed-task-runner` |
-| `server.composedTaskRunner.image.tag`               | Spring Cloud Dataflow Composed Task Runner image tag (immutable tags are recommended)                                            | `2.9.2-debian-10-r0`                                 |
+| `server.composedTaskRunner.image.tag`               | Spring Cloud Dataflow Composed Task Runner image tag (immutable tags are recommended)                                            | `2.9.4-debian-10-r44`                                |
 | `server.configuration.streamingEnabled`             | Enables or disables streaming data processing                                                                                    | `true`                                               |
 | `server.configuration.batchEnabled`                 | Enables or disables batch data (tasks and schedules) processing                                                                  | `true`                                               |
 | `server.configuration.accountName`                  | The name of the account to configure for the Kubernetes platform                                                                 | `default`                                            |
@@ -166,6 +164,7 @@ helm uninstall my-release
 | `server.ingress.extraTls`                           | The tls configuration for additional hostnames to be covered with this ingress record.                                           | `[]`                                                 |
 | `server.ingress.secrets`                            | If you're providing your own certificates, please use this to add the certificates as secrets                                    | `[]`                                                 |
 | `server.ingress.ingressClassName`                   | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                    | `""`                                                 |
+| `server.ingress.extraRules`                         | Additional rules to be covered with this ingress record                                                                          | `[]`                                                 |
 | `server.initContainers`                             | Add init containers to the Dataflow Server pods                                                                                  | `[]`                                                 |
 | `server.sidecars`                                   | Add sidecars to the Dataflow Server pods                                                                                         | `[]`                                                 |
 | `server.pdb.create`                                 | Enable/disable a Pod Disruption Budget creation                                                                                  | `false`                                              |
@@ -191,7 +190,7 @@ helm uninstall my-release
 | `skipper.hostAliases`                        | Deployment pod host aliases                                                                               | `[]`                           |
 | `skipper.image.registry`                     | Spring Cloud Skipper image registry                                                                       | `docker.io`                    |
 | `skipper.image.repository`                   | Spring Cloud Skipper image repository                                                                     | `bitnami/spring-cloud-skipper` |
-| `skipper.image.tag`                          | Spring Cloud Skipper image tag (immutable tags are recommended)                                           | `2.8.2-debian-10-r1`           |
+| `skipper.image.tag`                          | Spring Cloud Skipper image tag (immutable tags are recommended)                                           | `2.8.4-debian-10-r44`          |
 | `skipper.image.pullPolicy`                   | Spring Cloud Skipper image pull policy                                                                    | `IfNotPresent`                 |
 | `skipper.image.pullSecrets`                  | Specify docker-registry secret names as an array                                                          | `[]`                           |
 | `skipper.image.debug`                        | Enable image debug mode                                                                                   | `false`                        |
@@ -311,7 +310,7 @@ helm uninstall my-release
 | `metrics.enabled`                            | Enable Prometheus metrics                                                                                                  | `false`                            |
 | `metrics.image.registry`                     | Prometheus Rsocket Proxy image registry                                                                                    | `docker.io`                        |
 | `metrics.image.repository`                   | Prometheus Rsocket Proxy image repository                                                                                  | `bitnami/prometheus-rsocket-proxy` |
-| `metrics.image.tag`                          | Prometheus Rsocket Proxy image tag (immutable tags are recommended)                                                        | `1.3.0-debian-10-r386`             |
+| `metrics.image.tag`                          | Prometheus Rsocket Proxy image tag (immutable tags are recommended)                                                        | `1.4.0-debian-10-r83`              |
 | `metrics.image.pullPolicy`                   | Prometheus Rsocket Proxy image pull policy                                                                                 | `IfNotPresent`                     |
 | `metrics.image.pullSecrets`                  | Specify docker-registry secret names as an array                                                                           | `[]`                               |
 | `metrics.resources.limits`                   | The resources limits for the Prometheus Rsocket Proxy container                                                            | `{}`                               |
@@ -387,7 +386,7 @@ helm uninstall my-release
 | `waitForBackends.enabled`            | Wait for the database and other services (such as Kafka or RabbitMQ) used when enabling streaming | `true`                |
 | `waitForBackends.image.registry`     | Init container wait-for-backend image registry                                                    | `docker.io`           |
 | `waitForBackends.image.repository`   | Init container wait-for-backend image name                                                        | `bitnami/kubectl`     |
-| `waitForBackends.image.tag`          | Init container wait-for-backend image tag                                                         | `1.23.2-debian-10-r0` |
+| `waitForBackends.image.tag`          | Init container wait-for-backend image tag                                                         | `1.24.0-debian-10-r2` |
 | `waitForBackends.image.pullPolicy`   | Init container wait-for-backend image pull policy                                                 | `IfNotPresent`        |
 | `waitForBackends.image.pullSecrets`  | Specify docker-registry secret names as an array                                                  | `[]`                  |
 | `waitForBackends.resources.limits`   | Init container wait-for-backend resource limits                                                   | `{}`                  |
@@ -651,6 +650,18 @@ Find more information about how to deal with common errors related to Bitnami He
 
 If you enabled RabbitMQ chart to be used as the messaging solution for Skipper to manage streaming content, then it's necessary to set the `rabbitmq.auth.password` and `rabbitmq.auth.erlangCookie` parameters when upgrading for readiness/liveness probes to work properly. Inspect the RabbitMQ secret to obtain the password and the Erlang cookie, then you can upgrade your chart using the command below:
 
+### To 11.0.0
+
+This chart bumps the RabbitMQ version to 3.10.x. No issues are expected during the upgrade.
+
+### To 10.0.0
+
+This major updates the Kafka subchart to it newest major, 17.0.0. No major issues are expected during the upgrade.
+
+### To 9.0.0
+
+This major updates the RabbitMQ subchart to it newest major, 9.0.0. [Here](https://github.com/bitnami/charts/tree/master/bitnami/rabbitmq#to-900) you can find more information about the changes introduced in that version.
+
 ### To 8.0.0
 
 This major release bumps the MariaDB version to 10.6. Follow the [upstream instructions](https://mariadb.com/kb/en/upgrading-from-mariadb-105-to-mariadb-106/) for upgrading from MariaDB 10.5 to 10.6. No major issues are expected during the upgrade.
@@ -668,8 +679,8 @@ To upgrade to *6.0.0* from *5.x* using Kafka as messaging solution, it should be
 1. Obtain the credentials on your current release:
 
 ```bash
-export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
-export MARIADB_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-password}" | base64 --decode)
+export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 -d)
+export MARIADB_PASSWORD=$(kubectl get secret --namespace default scdf-mariadb -o jsonpath="{.data.mariadb-password}" | base64 -d)
 ```
 
 2. Upgrade your release using the same Kafka version:
@@ -750,11 +761,11 @@ To upgrade to `1.0.0`, you will need to reuse the PVC used to hold the MariaDB d
 Obtain the credentials and the name of the PVC used to hold the MariaDB data on your current release:
 
 ```bash
-export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 --decode)
-export MARIADB_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-password}" | base64 --decode)
+export MARIADB_ROOT_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-root-password}" | base64 -d)
+export MARIADB_PASSWORD=$(kubectl get secret --namespace default dataflow-mariadb -o jsonpath="{.data.mariadb-password}" | base64 -d)
 export MARIADB_PVC=$(kubectl get pvc -l app=mariadb,component=master,release=dataflow -o jsonpath="{.items[0].metadata.name}")
-export RABBITMQ_PASSWORD=$(kubectl get secret --namespace default dataflow-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 --decode)
-export RABBITMQ_ERLANG_COOKIE=$(kubectl get secret --namespace default dataflow-rabbitmq -o jsonpath="{.data.rabbitmq-erlang-cookie}" | base64 --decode)
+export RABBITMQ_PASSWORD=$(kubectl get secret --namespace default dataflow-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 -d)
+export RABBITMQ_ERLANG_COOKIE=$(kubectl get secret --namespace default dataflow-rabbitmq -o jsonpath="{.data.rabbitmq-erlang-cookie}" | base64 -d)
 ```
 
 Upgrade your release (maintaining the version) disabling MariaDB and scaling Data Flow replicas to 0:

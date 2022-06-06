@@ -19,7 +19,7 @@ $ helm install my-release bitnami/discourse
 
 This chart bootstraps a [Discourse](https://www.discourse.org/) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
-It also packages [Bitnami Postgresql](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) and [Bitnami Redis&trade;](https://github.com/bitnami/charts/tree/master/bitnami/redis) which are required as databases for the Discourse application.
+It also packages [Bitnami Postgresql](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) and [Bitnami Redis&reg;](https://github.com/bitnami/charts/tree/master/bitnami/redis) which are required as databases for the Discourse application.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters.
 
@@ -85,7 +85,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------- |
 | `image.registry`                | Discourse image registry                                                                                                 | `docker.io`           |
 | `image.repository`              | Discourse image repository                                                                                               | `bitnami/discourse`   |
-| `image.tag`                     | Discourse image tag                                                                                                      | `2.7.13-debian-10-r0` |
+| `image.tag`                     | Discourse image tag                                                                                                      | `2.8.3-debian-10-r36` |
 | `image.pullPolicy`              | Discourse image pull policy                                                                                              | `IfNotPresent`        |
 | `image.pullSecrets`             | Discourse image pull secrets                                                                                             | `[]`                  |
 | `image.debug`                   | Enable image debug mode                                                                                                  | `false`               |
@@ -175,6 +175,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `persistence.size`                                | Persistent Volume size                                                                       | `10Gi`          |
 | `persistence.existingClaim`                       | The name of an existing PVC to use for persistence                                           | `""`            |
 | `persistence.selector`                            | Selector to match an existing Persistent Volume for Discourse data PVC                       | `{}`            |
+| `persistence.annotations`                         | Persistent Volume Claim annotations                                                          | `{}`            |
 
 
 ### Sidekiq container parameters
@@ -221,9 +222,10 @@ The command removes all the Kubernetes components associated with the chart and 
 | Name                               | Description                                                                                                                      | Value                    |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | `service.type`                     | Discourse service type                                                                                                           | `ClusterIP`              |
-| `service.ports.http`               | Discourse service HTTP port                                                                                                      | `8080`                   |
+| `service.ports.http`               | Discourse service HTTP port                                                                                                      | `80`                     |
 | `service.nodePorts.http`           | Node port for HTTP                                                                                                               | `""`                     |
 | `service.sessionAffinity`          | Control where client requests go, to the same pod or round-robin                                                                 | `None`                   |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                                                                      | `{}`                     |
 | `service.clusterIP`                | Discourse service Cluster IP                                                                                                     | `""`                     |
 | `service.loadBalancerIP`           | Discourse service Load Balancer IP                                                                                               | `""`                     |
 | `service.loadBalancerSourceRanges` | Discourse service Load Balancer sources                                                                                          | `[]`                     |
@@ -243,6 +245,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ingress.extraPaths`               | An array with additional arbitrary paths that may need to be added to the ingress under the main host                            | `[]`                     |
 | `ingress.extraTls`                 | TLS configuration for additional hostname(s) to be covered with this ingress record                                              | `[]`                     |
 | `ingress.secrets`                  | Custom TLS certificates as secrets                                                                                               | `[]`                     |
+| `ingress.extraRules`               | Additional rules to be covered with this ingress record                                                                          | `[]`                     |
 
 
 ### Volume Permissions parameters
@@ -313,19 +316,19 @@ The command removes all the Kubernetes components associated with the chart and 
 | `externalDatabase.existingSecretPostgresPasswordKey` | Name of an existing secret key containing the database admin user credentials                          | `postgres-password`   |
 
 
-### Redis&trade; parameters
+### Redis&reg; parameters
 
 | Name                                      | Description                                                                | Value            |
 | ----------------------------------------- | -------------------------------------------------------------------------- | ---------------- |
-| `redis.enabled`                           | Switch to enable or disable the Redis&trade; helm                          | `true`           |
+| `redis.enabled`                           | Switch to enable or disable the Redis&reg; helm                            | `true`           |
 | `redis.auth.enabled`                      | Enable password authentication                                             | `true`           |
-| `redis.auth.password`                     | Redis&trade; password                                                      | `""`             |
-| `redis.auth.existingSecret`               | The name of an existing secret with Redis&trade; credentials               | `""`             |
-| `redis.architecture`                      | Redis&trade; architecture. Allowed values: `standalone` or `replication`   | `standalone`     |
-| `externalRedis.host`                      | Redis&trade; host                                                          | `localhost`      |
-| `externalRedis.port`                      | Redis&trade; port number                                                   | `6379`           |
-| `externalRedis.username`                  | Redis&trade; username                                                      | `""`             |
-| `externalRedis.password`                  | Redis&trade; password                                                      | `""`             |
+| `redis.auth.password`                     | Redis&reg; password                                                        | `""`             |
+| `redis.auth.existingSecret`               | The name of an existing secret with Redis&reg; credentials                 | `""`             |
+| `redis.architecture`                      | Redis&reg; architecture. Allowed values: `standalone` or `replication`     | `standalone`     |
+| `externalRedis.host`                      | Redis&reg; host                                                            | `localhost`      |
+| `externalRedis.port`                      | Redis&reg; port number                                                     | `6379`           |
+| `externalRedis.username`                  | Redis&reg; username                                                        | `""`             |
+| `externalRedis.password`                  | Redis&reg; password                                                        | `""`             |
 | `externalRedis.existingSecret`            | Name of an existing secret resource containing the Redis&trade credentials | `""`             |
 | `externalRedis.existingSecretPasswordKey` | Name of an existing secret key containing the Redis&trade credentials      | `redis-password` |
 
@@ -442,7 +445,7 @@ Note also that if you disable PostgreSQL per above you MUST supply values for th
 
 In case the database already contains data from a previous Discourse installation, you need to set the `discourse.skipInstall` parameter to _true_. Otherwise, the container would execute the installation wizard and could modify the existing data in the database. This parameter force the container to not execute the Discourse installation wizard.
 
-Similarly, you can specify an external Redis&trade; instance rather than installing one inside your cluster. First, you may disable the Redis&trade; installation with the `redis.enabled` option. As aforementioned, used the provided parameters to provide data about your instance:
+Similarly, you can specify an external Redis&reg; instance rather than installing one inside your cluster. First, you may disable the Redis&reg; installation with the `redis.enabled` option. As aforementioned, used the provided parameters to provide data about your instance:
 
 ```console
 redis.enabled=false

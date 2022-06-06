@@ -234,6 +234,10 @@ Find more information about how to deal with common errors related to Bitnami's 
 $ helm upgrade my-release bitnami/wavefront-prometheus-storage-adapter
 ```
 
+### To 2.0.0
+
+This major updates the Wavefront subchart to its newest major release, 4.0.0, which contains a new major version for kube-state-metrics. For more information on this subchart's major version, please refer to the [Wavefront upgrade notes](https://github.com/bitnami/charts/tree/master/bitnami/wavefront#to-400).
+
 ### To 1.0.0
 
 This major updates the Wavefront subchart to its newest major release, 3.0.0, which contains a new major version for kube-state-metrics. For more information on this subchart's major version, please refer to the [Wavefront upgrade notes](https://github.com/bitnami/charts/tree/master/bitnami/wavefront#to-300).

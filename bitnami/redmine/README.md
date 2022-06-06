@@ -93,7 +93,7 @@ helm install my-release bitnami/redmine --set databaseType=postgresql
 | ----------------------- | ---------------------------------------------------------------------- | -------------------- |
 | `image.registry`        | Redmine image registry                                                 | `docker.io`          |
 | `image.repository`      | Redmine image repository                                               | `bitnami/redmine`    |
-| `image.tag`             | Redmine image tag (immutable tags are recommended)                     | `4.2.4-debian-10-r7` |
+| `image.tag`             | Redmine image tag (immutable tags are recommended)                     | `5.0.1-debian-10-r7` |
 | `image.pullPolicy`      | Redmine image pull policy                                              | `IfNotPresent`       |
 | `image.pullSecrets`     | Redmine image pull secrets                                             | `[]`                 |
 | `image.debug`           | Enable image debug mode                                                | `false`              |
@@ -185,6 +185,7 @@ helm install my-release bitnami/redmine --set databaseType=postgresql
 | `service.ports.http`               | Redmine service HTTP port                                                                                                        | `80`                     |
 | `service.nodePorts.http`           | NodePort for the Redmine HTTP endpoint                                                                                           | `""`                     |
 | `service.sessionAffinity`          | Control where client requests go, to the same pod or round-robin                                                                 | `None`                   |
+| `service.sessionAffinityConfig`    | Additional settings for the sessionAffinity                                                                                      | `{}`                     |
 | `service.clusterIP`                | Redmine service Cluster IP                                                                                                       | `""`                     |
 | `service.loadBalancerIP`           | Redmine service Load Balancer IP                                                                                                 | `""`                     |
 | `service.loadBalancerSourceRanges` | Redmine service Load Balancer sources                                                                                            | `[]`                     |
@@ -204,6 +205,7 @@ helm install my-release bitnami/redmine --set databaseType=postgresql
 | `ingress.extraPaths`               | An array with additional arbitrary paths that may need to be added to the ingress under the main host                            | `[]`                     |
 | `ingress.extraTls`                 | The tls configuration for additional hostnames to be covered with this ingress record.                                           | `[]`                     |
 | `ingress.secrets`                  | If you're providing your own certificates, please use this to add the certificates as secrets                                    | `[]`                     |
+| `ingress.extraRules`               | Additional rules to be covered with this ingress record                                                                          | `[]`                     |
 
 
 ### Persistence Parameters
@@ -344,7 +346,7 @@ helm install my-release bitnami/redmine --set databaseType=postgresql
 | `certificates.customCA`                              | Defines a list of secrets to import into the container trust store | `[]`                                     |
 | `certificates.image.registry`                        | Redmine image registry                                             | `docker.io`                              |
 | `certificates.image.repository`                      | Redmine image repository                                           | `bitnami/bitnami-shell`                  |
-| `certificates.image.tag`                             | Redmine image tag (immutable tags are recommended)                 | `10-debian-10-r361`                      |
+| `certificates.image.tag`                             | Redmine image tag (immutable tags are recommended)                 | `10-debian-10-r434`                      |
 | `certificates.image.pullPolicy`                      | Redmine image pull policy                                          | `IfNotPresent`                           |
 | `certificates.image.pullSecrets`                     | Redmine image pull secrets                                         | `[]`                                     |
 | `certificates.extraEnvVars`                          | Container sidecar extra environment variables (e.g. proxy)         | `[]`                                     |

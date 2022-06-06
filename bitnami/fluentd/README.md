@@ -85,7 +85,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
 | `image.registry`                                               | Fluentd image registry                                                                                                                                             | `docker.io`                                                |
 | `image.repository`                                             | Fluentd image repository                                                                                                                                           | `bitnami/fluentd`                                          |
-| `image.tag`                                                    | Fluentd image tag (immutable tags are recommended)                                                                                                                 | `1.14.4-debian-10-r11`                                     |
+| `image.tag`                                                    | Fluentd image tag (immutable tags are recommended)                                                                                                                 | `1.14.6-debian-10-r49`                                     |
 | `image.pullPolicy`                                             | Fluentd image pull policy                                                                                                                                          | `IfNotPresent`                                             |
 | `image.pullSecrets`                                            | Fluentd image pull secrets                                                                                                                                         | `[]`                                                       |
 | `image.debug`                                                  | Enable image debug mode                                                                                                                                            | `false`                                                    |
@@ -228,6 +228,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `aggregator.ingress.extraTls`                                  | The tls configuration for additional hostnames to be covered with this ingress record.                                                                             | `[]`                                                       |
 | `aggregator.ingress.secrets`                                   | If you're providing your own certificates, please use this to add the certificates as secrets                                                                      | `[]`                                                       |
 | `aggregator.ingress.ingressClassName`                          | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                                                                      | `""`                                                       |
+| `aggregator.ingress.extraRules`                                | Additional rules to be covered with this ingress record                                                                                                            | `[]`                                                       |
 | `aggregator.startupProbe.enabled`                              | Enable startupProbe                                                                                                                                                | `true`                                                     |
 | `aggregator.startupProbe.httpGet.path`                         | Request path for startupProbe                                                                                                                                      | `/fluentd.healthcheck?json=%7B%22ping%22%3A+%22pong%22%7D` |
 | `aggregator.startupProbe.httpGet.port`                         | Port for startupProbe                                                                                                                                              | `http`                                                     |
@@ -495,7 +496,7 @@ Affected values:
 - `aggregator.securityContext` and `forwarder.securityContext` have been renamed as `aggregator.podSecurityContext` and `forwarder.podSecurityContext` respectively.
 - `rbac.*` and `serviceAccount.*` have been definitely removed. Deprecation warning will no longer show.
 
-Additionally also updates the Redis&trade; subchart to it newest major, 14.0.0, which contains similar changes.
+Additionally also updates the Redis&reg; subchart to it newest major, 14.0.0, which contains similar changes.
 
 ### To 4.0.0
 
