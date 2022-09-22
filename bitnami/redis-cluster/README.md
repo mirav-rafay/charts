@@ -17,7 +17,7 @@ $ helm install my-release bitnami/redis-cluster
 
 ## Introduction
 
-This chart bootstraps a [Redis&reg;](https://github.com/bitnami/bitnami-docker-redis) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [Redis&reg;](https://github.com/bitnami/containers/tree/main/bitnami/redis) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.dev/) for deployment and management of Helm Charts in clusters.
 
@@ -94,7 +94,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | `diagnosticMode.args`                         | Args to override all containers in the deployment                                                                                                   | `["infinity"]`          |
 | `image.registry`                              | Redis&reg; cluster image registry                                                                                                                   | `docker.io`             |
 | `image.repository`                            | Redis&reg; cluster image repository                                                                                                                 | `bitnami/redis-cluster` |
-| `image.tag`                                   | Redis&reg; cluster image tag (immutable tags are recommended)                                                                                       | `6.2.7-debian-10-r22`   |
+| `image.tag`                                   | Redis&reg; cluster image tag (immutable tags are recommended)                                                                                       | `7.0.5-debian-11-r0`    |
+| `image.digest`                                | Redis&reg; cluster image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag                                  | `""`                    |
 | `image.pullPolicy`                            | Redis&reg; cluster image pull policy                                                                                                                | `IfNotPresent`          |
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array                                                                                                    | `[]`                    |
 | `image.debug`                                 | Enable image debug mode                                                                                                                             | `false`                 |
@@ -155,7 +156,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | `volumePermissions.enabled`                   | Enable init container that changes volume permissions in the registry (for cases where the default k8s `runAsUser` and `fsUser` values do not work) | `false`                 |
 | `volumePermissions.image.registry`            | Init container volume-permissions image registry                                                                                                    | `docker.io`             |
 | `volumePermissions.image.repository`          | Init container volume-permissions image repository                                                                                                  | `bitnami/bitnami-shell` |
-| `volumePermissions.image.tag`                 | Init container volume-permissions image tag                                                                                                         | `10-debian-10-r431`     |
+| `volumePermissions.image.tag`                 | Init container volume-permissions image tag                                                                                                         | `11-debian-11-r37`      |
+| `volumePermissions.image.digest`              | Init container volume-permissions image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag                   | `""`                    |
 | `volumePermissions.image.pullPolicy`          | Init container volume-permissions image pull policy                                                                                                 | `IfNotPresent`          |
 | `volumePermissions.image.pullSecrets`         | Specify docker-registry secret names as an array                                                                                                    | `[]`                    |
 | `volumePermissions.resources.limits`          | The resources limits for the container                                                                                                              | `{}`                    |
@@ -277,54 +279,58 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Metrics sidecar parameters
 
-| Name                                       | Description                                                                                                                        | Value                    |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `metrics.enabled`                          | Start a side-car prometheus exporter                                                                                               | `false`                  |
-| `metrics.image.registry`                   | Redis&reg; exporter image registry                                                                                                 | `docker.io`              |
-| `metrics.image.repository`                 | Redis&reg; exporter image name                                                                                                     | `bitnami/redis-exporter` |
-| `metrics.image.tag`                        | Redis&reg; exporter image tag                                                                                                      | `1.37.0-debian-10-r62`   |
-| `metrics.image.pullPolicy`                 | Redis&reg; exporter image pull policy                                                                                              | `IfNotPresent`           |
-| `metrics.image.pullSecrets`                | Specify docker-registry secret names as an array                                                                                   | `[]`                     |
-| `metrics.resources`                        | Metrics exporter resource requests and limits                                                                                      | `{}`                     |
-| `metrics.extraArgs`                        | Extra arguments for the binary; possible values [here](https://github.com/oliver006/redis_exporter                                 | `{}`                     |
-| `metrics.podAnnotations`                   | Additional annotations for Metrics exporter pod                                                                                    | `{}`                     |
-| `metrics.podLabels`                        | Additional labels for Metrics exporter pod                                                                                         | `{}`                     |
-| `metrics.serviceMonitor.enabled`           | If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)                             | `false`                  |
-| `metrics.serviceMonitor.namespace`         | Optional namespace which Prometheus is running in                                                                                  | `""`                     |
-| `metrics.serviceMonitor.interval`          | How frequently to scrape metrics (use by default, falling back to Prometheus' default)                                             | `""`                     |
-| `metrics.serviceMonitor.scrapeTimeout`     | Timeout after which the scrape is ended                                                                                            | `""`                     |
-| `metrics.serviceMonitor.selector`          | Prometheus instance selector labels                                                                                                | `{}`                     |
-| `metrics.serviceMonitor.labels`            | ServiceMonitor extra labels                                                                                                        | `{}`                     |
-| `metrics.serviceMonitor.annotations`       | ServiceMonitor annotations                                                                                                         | `{}`                     |
-| `metrics.serviceMonitor.jobLabel`          | The name of the label on the target service to use as the job name in prometheus.                                                  | `""`                     |
-| `metrics.serviceMonitor.relabelings`       | RelabelConfigs to apply to samples before scraping                                                                                 | `[]`                     |
-| `metrics.serviceMonitor.metricRelabelings` | MetricRelabelConfigs to apply to samples before ingestion                                                                          | `[]`                     |
-| `metrics.prometheusRule.enabled`           | Set this to true to create prometheusRules for Prometheus operator                                                                 | `false`                  |
-| `metrics.prometheusRule.additionalLabels`  | Additional labels that can be used so prometheusRules will be discovered by Prometheus                                             | `{}`                     |
-| `metrics.prometheusRule.namespace`         | namespace where prometheusRules resource should be created                                                                         | `""`                     |
-| `metrics.prometheusRule.rules`             | Create specified [rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/), check values for an example. | `[]`                     |
-| `metrics.priorityClassName`                | Metrics exporter pod priorityClassName                                                                                             | `""`                     |
-| `metrics.service.type`                     | Kubernetes Service type (redis metrics)                                                                                            | `ClusterIP`              |
-| `metrics.service.loadBalancerIP`           | Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank                                                   | `""`                     |
-| `metrics.service.annotations`              | Annotations for the services to monitor.                                                                                           | `{}`                     |
-| `metrics.service.labels`                   | Additional labels for the metrics service                                                                                          | `{}`                     |
-| `metrics.service.clusterIP`                | Service Cluster IP                                                                                                                 | `""`                     |
+| Name                                                        | Description                                                                                                                        | Value                    |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `metrics.enabled`                                           | Start a side-car prometheus exporter                                                                                               | `false`                  |
+| `metrics.image.registry`                                    | Redis&reg; exporter image registry                                                                                                 | `docker.io`              |
+| `metrics.image.repository`                                  | Redis&reg; exporter image name                                                                                                     | `bitnami/redis-exporter` |
+| `metrics.image.tag`                                         | Redis&reg; exporter image tag                                                                                                      | `1.44.0-debian-11-r8`    |
+| `metrics.image.digest`                                      | Redis&reg; exporter image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag                | `""`                     |
+| `metrics.image.pullPolicy`                                  | Redis&reg; exporter image pull policy                                                                                              | `IfNotPresent`           |
+| `metrics.image.pullSecrets`                                 | Specify docker-registry secret names as an array                                                                                   | `[]`                     |
+| `metrics.resources`                                         | Metrics exporter resource requests and limits                                                                                      | `{}`                     |
+| `metrics.extraArgs`                                         | Extra arguments for the binary; possible values [here](https://github.com/oliver006/redis_exporter                                 | `{}`                     |
+| `metrics.podAnnotations`                                    | Additional annotations for Metrics exporter pod                                                                                    | `{}`                     |
+| `metrics.podLabels`                                         | Additional labels for Metrics exporter pod                                                                                         | `{}`                     |
+| `metrics.containerSecurityContext.enabled`                  | Enable Metrics Containers' Security Context                                                                                        | `false`                  |
+| `metrics.containerSecurityContext.allowPrivilegeEscalation` | Allow Privilege Escalation for metrics container                                                                                   | `false`                  |
+| `metrics.serviceMonitor.enabled`                            | If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)                             | `false`                  |
+| `metrics.serviceMonitor.namespace`                          | Optional namespace which Prometheus is running in                                                                                  | `""`                     |
+| `metrics.serviceMonitor.interval`                           | How frequently to scrape metrics (use by default, falling back to Prometheus' default)                                             | `""`                     |
+| `metrics.serviceMonitor.scrapeTimeout`                      | Timeout after which the scrape is ended                                                                                            | `""`                     |
+| `metrics.serviceMonitor.selector`                           | Prometheus instance selector labels                                                                                                | `{}`                     |
+| `metrics.serviceMonitor.labels`                             | ServiceMonitor extra labels                                                                                                        | `{}`                     |
+| `metrics.serviceMonitor.annotations`                        | ServiceMonitor annotations                                                                                                         | `{}`                     |
+| `metrics.serviceMonitor.jobLabel`                           | The name of the label on the target service to use as the job name in prometheus.                                                  | `""`                     |
+| `metrics.serviceMonitor.relabelings`                        | RelabelConfigs to apply to samples before scraping                                                                                 | `[]`                     |
+| `metrics.serviceMonitor.metricRelabelings`                  | MetricRelabelConfigs to apply to samples before ingestion                                                                          | `[]`                     |
+| `metrics.prometheusRule.enabled`                            | Set this to true to create prometheusRules for Prometheus operator                                                                 | `false`                  |
+| `metrics.prometheusRule.additionalLabels`                   | Additional labels that can be used so prometheusRules will be discovered by Prometheus                                             | `{}`                     |
+| `metrics.prometheusRule.namespace`                          | namespace where prometheusRules resource should be created                                                                         | `""`                     |
+| `metrics.prometheusRule.rules`                              | Create specified [rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/), check values for an example. | `[]`                     |
+| `metrics.priorityClassName`                                 | Metrics exporter pod priorityClassName                                                                                             | `""`                     |
+| `metrics.service.type`                                      | Kubernetes Service type (redis metrics)                                                                                            | `ClusterIP`              |
+| `metrics.service.loadBalancerIP`                            | Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank                                                   | `""`                     |
+| `metrics.service.annotations`                               | Annotations for the services to monitor.                                                                                           | `{}`                     |
+| `metrics.service.labels`                                    | Additional labels for the metrics service                                                                                          | `{}`                     |
+| `metrics.service.clusterIP`                                 | Service Cluster IP                                                                                                                 | `""`                     |
 
 
 ### Sysctl Image parameters
 
-| Name                             | Description                                        | Value                   |
-| -------------------------------- | -------------------------------------------------- | ----------------------- |
-| `sysctlImage.enabled`            | Enable an init container to modify Kernel settings | `false`                 |
-| `sysctlImage.command`            | sysctlImage command to execute                     | `[]`                    |
-| `sysctlImage.registry`           | sysctlImage Init container registry                | `docker.io`             |
-| `sysctlImage.repository`         | sysctlImage Init container repository              | `bitnami/bitnami-shell` |
-| `sysctlImage.tag`                | sysctlImage Init container tag                     | `10-debian-10-r431`     |
-| `sysctlImage.pullPolicy`         | sysctlImage Init container pull policy             | `IfNotPresent`          |
-| `sysctlImage.pullSecrets`        | Specify docker-registry secret names as an array   | `[]`                    |
-| `sysctlImage.mountHostSys`       | Mount the host `/sys` folder to `/host-sys`        | `false`                 |
-| `sysctlImage.resources.limits`   | The resources limits for the container             | `{}`                    |
-| `sysctlImage.resources.requests` | The requested resources for the container          | `{}`                    |
+| Name                             | Description                                                                                                          | Value                   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `sysctlImage.enabled`            | Enable an init container to modify Kernel settings                                                                   | `false`                 |
+| `sysctlImage.command`            | sysctlImage command to execute                                                                                       | `[]`                    |
+| `sysctlImage.registry`           | sysctlImage Init container registry                                                                                  | `docker.io`             |
+| `sysctlImage.repository`         | sysctlImage Init container repository                                                                                | `bitnami/bitnami-shell` |
+| `sysctlImage.tag`                | sysctlImage Init container tag                                                                                       | `11-debian-11-r37`      |
+| `sysctlImage.digest`             | sysctlImage Init container digest in the way sha256:aa.... Please note this parameter, if set, will override the tag | `""`                    |
+| `sysctlImage.pullPolicy`         | sysctlImage Init container pull policy                                                                               | `IfNotPresent`          |
+| `sysctlImage.pullSecrets`        | Specify docker-registry secret names as an array                                                                     | `[]`                    |
+| `sysctlImage.mountHostSys`       | Mount the host `/sys` folder to `/host-sys`                                                                          | `false`                 |
+| `sysctlImage.resources.limits`   | The resources limits for the container                                                                               | `{}`                    |
+| `sysctlImage.resources.requests` | The requested resources for the container                                                                            | `{}`                    |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,

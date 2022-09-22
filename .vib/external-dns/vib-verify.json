@@ -32,10 +32,14 @@
       },
       "actions": [
         {
-          "action_id": "trivy",
+          "action_id": "goss",
           "params": {
-            "threshold": "CRITICAL",
-            "vuln_type": ["OS"]
+            "resources": {
+              "path": "/.vib/external-dns/goss"
+            },
+            "remote": {
+              "workload": "deploy-external-dns"
+            }
           }
         },
         {

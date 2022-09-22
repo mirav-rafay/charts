@@ -1,5 +1,9 @@
 /// <reference types="cypress" />
-import { random, getPageUrlFromTitle, getUserFromEmail } from './utils';
+import {
+  random,
+  getPageUrlFromTitle,
+  getUserFromEmail,
+} from '../support/utils';
 
 it('allows to log in and out', () => {
   cy.login();
@@ -20,7 +24,7 @@ it('allows to create and publish a new post', () => {
     cy.get('textarea[placeholder="Post title"]').type(
       `${$posts.newPost.title}-${random}`
     );
-    cy.get('article').type(`${$posts.newPost.content}-${random}`);
+    cy.get('article div[contenteditable="true"]').type(`${$posts.newPost.content}-${random}`, {force: true});
   });
   // Publishing a post needs 3 steps
   // Step 1: Open drop-down menu
@@ -49,7 +53,13 @@ it('allows to create a new page', () => {
     cy.get('textarea[placeholder="Page title"]').type(
       `${$pages.newPage.title}-${random}`
     );
+    // Clicking a different element to trigger save event
+    cy.get('article').click()
+    cy.contains('div[class=gh-editor-post-status]', 'Saved');
     cy.get('article').type(`${$pages.newPage.content}-${random}`);
+    // Ensure content has been saved before publishing
+    cy.get('textarea[placeholder="Page title"]').click()
+    cy.contains('div[class=gh-editor-post-status]', 'Saved');
   });
   // Publishing a page needs 3 steps
   // Step 1: Open drop down-menu

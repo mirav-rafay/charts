@@ -76,8 +76,8 @@ data:
     #!/bin/bash
 
     ID="${MY_POD_NAME#"{{ $fullname }}-"}"
-    if [[ -f "/bitnami/kafka/data/meta.properties" ]]; then
-        export KAFKA_CFG_BROKER_ID="$(grep "broker.id" /bitnami/kafka/data/meta.properties | awk -F '=' '{print $2}')"
+    if [[ -f "{{ .Values.logsDirs | splitList "," | first }}/meta.properties" ]]; then
+        export KAFKA_CFG_BROKER_ID="$(grep "broker.id" "{{ .Values.logsDirs | splitList "," | first }}/meta.properties" | awk -F '=' '{print $2}')"
     else
         export KAFKA_CFG_BROKER_ID="$((ID + {{ .Values.minBrokerId }}))"
     fi
@@ -106,6 +106,9 @@ data:
     {{- else }}
     export EXTERNAL_ACCESS_PORT=$(echo '{{ .Values.externalAccess.service.nodePorts }}' | tr -d '[]' | cut -d ' ' -f "$(($ID + 1))")
     {{- end }}
+    {{- else }}
+        export EXTERNAL_ACCESS_HOST={{ .Values.externalAccess.service.domain }}
+        export EXTERNAL_ACCESS_PORT="$((ID + {{ .Values.externalAccess.service.ports.external }}))"
     {{- end }}
 
     # Configure Kafka advertised listeners

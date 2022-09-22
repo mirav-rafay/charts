@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { random, verifySuccesOfAction } from './utils';
+import { random, verifySuccesOfAction } from '../support/utils';
 
 it('allows user to log in and log out', () => {
   cy.login();
@@ -25,7 +25,6 @@ it('allows creating a dashboard with a panel', () => {
   });
 
   cy.get('[aria-label*="Save dashboard"]').click();
-  cy.get('button[aria-label*="Close dialogue"]');
   cy.fixture('dashboards').then((dashboard) => {
     cy.get('[name*="title"]')
       .clear()
@@ -50,6 +49,9 @@ it('checks if it is possible to upload a dashboard as JSON file', () => {
       .type(`${dashboard.newDashboard.uploadedTitle} ${random}`);
     cy.get('[data-testid*="data-testid-import-dashboard-submit"]').click();
     cy.visit('dashboards');
+    cy.get(
+      'input[aria-label*="View as list"]'
+    ).click({ force: true });
     cy.contains('div', `${dashboard.newDashboard.uploadedTitle} ${random}`);
   });
 });

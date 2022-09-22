@@ -65,21 +65,22 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Common parameters
 
-| Name                | Description                                         | Value               |
-| ------------------- | --------------------------------------------------- | ------------------- |
-| `kubeVersion`       | Override Kubernetes version                         | `""`                |
-| `nameOverride`      | String to partially override common.names.name      | `""`                |
-| `fullnameOverride`  | String to fully override common.names.fullname      | `""`                |
-| `namespaceOverride` | String to fully override common.names.namespace     | `""`                |
-| `commonLabels`      | Labels to add to all deployed objects               | `{}`                |
-| `commonAnnotations` | Annotations to add to all deployed objects          | `{}`                |
-| `clusterDomain`     | Kubernetes cluster domain name                      | `cluster.local`     |
-| `extraDeploy`       | Array of extra objects to deploy with the release   | `[]`                |
-| `image.registry`    | Pinniped image registry                             | `docker.io`         |
-| `image.repository`  | Pinniped image repository                           | `bitnami/pinniped`  |
-| `image.tag`         | Pinniped image tag (immutable tags are recommended) | `0.18.0-scratch-r3` |
-| `image.pullPolicy`  | Pinniped image pull policy                          | `IfNotPresent`      |
-| `image.pullSecrets` | Pinniped image pull secrets                         | `[]`                |
+| Name                | Description                                                                                              | Value               |
+| ------------------- | -------------------------------------------------------------------------------------------------------- | ------------------- |
+| `kubeVersion`       | Override Kubernetes version                                                                              | `""`                |
+| `nameOverride`      | String to partially override common.names.name                                                           | `""`                |
+| `fullnameOverride`  | String to fully override common.names.fullname                                                           | `""`                |
+| `namespaceOverride` | String to fully override common.names.namespace                                                          | `""`                |
+| `commonLabels`      | Labels to add to all deployed objects                                                                    | `{}`                |
+| `commonAnnotations` | Annotations to add to all deployed objects                                                               | `{}`                |
+| `clusterDomain`     | Kubernetes cluster domain name                                                                           | `cluster.local`     |
+| `extraDeploy`       | Array of extra objects to deploy with the release                                                        | `[]`                |
+| `image.registry`    | Pinniped image registry                                                                                  | `docker.io`         |
+| `image.repository`  | Pinniped image repository                                                                                | `bitnami/pinniped`  |
+| `image.tag`         | Pinniped image tag (immutable tags are recommended)                                                      | `0.19.0-scratch-r0` |
+| `image.digest`      | Pinniped image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag | `""`                |
+| `image.pullPolicy`  | Pinniped image pull policy                                                                               | `IfNotPresent`      |
+| `image.pullSecrets` | Pinniped image pull secrets                                                                              | `[]`                |
 
 
 ### Concierge Parameters
@@ -90,6 +91,10 @@ The command removes all the Kubernetes components associated with the chart and 
 | `concierge.replicaCount`                                    | Number of Concierge replicas to deploy                                                                                   | `1`             |
 | `concierge.containerPorts.api`                              | Concierge API container port                                                                                             | `10250`         |
 | `concierge.containerPorts.proxy`                            | Concierge Proxy container port                                                                                           | `8443`          |
+| `concierge.configurationPorts.aggregatedAPIServerPort`      | Concierge API configuration port                                                                                         | `""`            |
+| `concierge.configurationPorts.impersonationProxyServerPort` | Concierge Proxy configuration port                                                                                       | `""`            |
+| `concierge.hostNetwork`                                     | Concierge API and Proxy container hostNetwork                                                                            | `false`         |
+| `concierge.dnsPolicy`                                       | Concierge API and Proxy container dnsPolicy                                                                              | `""`            |
 | `concierge.configuration`                                   | Concierge pinniped.yaml configuration file                                                                               | `""`            |
 | `concierge.credentialIssuerConfig`                          | Configuration for the credential issuer                                                                                  | `""`            |
 | `concierge.livenessProbe.enabled`                           | Enable livenessProbe on Concierge containers                                                                             | `true`          |
@@ -299,7 +304,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 See https://github.com/bitnami-labs/readme-generator-for-helm to create the table
 
-The above parameters map to the env variables defined in [bitnami/pinniped](http://github.com/bitnami/bitnami-docker-pinniped). For more information please refer to the [bitnami/pinniped](http://github.com/bitnami/bitnami-docker-pinniped) image documentation.
+The above parameters map to the env variables defined in [bitnami/pinniped](https://github.com/bitnami/containers/tree/main/bitnami/pinniped). For more information please refer to the [bitnami/pinniped](https://github.com/bitnami/containers/tree/main/bitnami/pinniped) image documentation.
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
@@ -329,7 +334,7 @@ Bitnami will release a new chart updating its containers if a new version of the
 
 ## Persistence
 
-The [Bitnami pinniped](https://github.com/bitnami/bitnami-docker-pinniped) image stores the pinniped data and configurations at the `/bitnami` path of the container. Persistent Volume Claims are used to keep the data across deployments. [Learn more about persistence in the chart documentation](https://docs.bitnami.com/kubernetes/apps/pinniped/configuration/chart-persistence/).
+The [Bitnami pinniped](https://github.com/bitnami/containers/tree/main/bitnami/pinniped) image stores the pinniped data and configurations at the `/bitnami` path of the container. Persistent Volume Claims are used to keep the data across deployments. [Learn more about persistence in the chart documentation](https://docs.bitnami.com/kubernetes/apps/pinniped/configuration/chart-persistence/).
 
 ### Additional environment variables
 

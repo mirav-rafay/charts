@@ -172,10 +172,8 @@ spec:
               mountPath: /opt/bitnami/grafana/conf/grafana.ini
               subPath: grafana.ini
             {{- end }}
-            {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: /opt/bitnami/grafana/data
-            {{- end }}
             {{- if .Values.dashboardsProvider.enabled }}
             - name: dashboards-provider
               mountPath: /opt/bitnami/grafana/conf/provisioning/dashboards
@@ -189,7 +187,7 @@ spec:
             {{- end }}
               subPath: {{ .fileName }}
             {{- end }}
-            {{- if .Values.datasources.secretName }}
+            {{- if or (.Values.datasources.secretName) (.Values.datasources.secretDefinition) }}
             - name: datasources
               mountPath: /opt/bitnami/grafana/conf/provisioning/datasources
             {{- end }}
@@ -271,10 +269,12 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.grafana.sidecars "context" $) | nindent 8 }}
         {{- end }}
       volumes:
-        {{- if .Values.persistence.enabled }}
         - name: data
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.existingClaim | default (include "common.names.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
         {{- end }}
         {{- if .Values.ldap.enabled }}
         - name: ldap
@@ -307,6 +307,10 @@ spec:
         - name: datasources
           secret:
             secretName: {{ .Values.datasources.secretName }}
+        {{- else if .Values.datasources.secretDefinition }}
+        - name: datasources
+          secret:
+            secretName: {{ include "common.names.fullname" . }}-datasources
         {{- end }}
         {{- if .Values.notifiers.configMapName }}
         - name: notifiers
